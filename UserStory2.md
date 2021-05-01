@@ -1,30 +1,37 @@
-# User Story 1
+# User Story 2
 
-To keep an eye on the costs, you want to develop a small app which calculates the total price depending on the chosen plates. **A user interface is NOT necessary. Parsing inputs is also NOT necessary. Use static inputs.**<br><br>Calculate the price of the chosen plates.
-<br><br>
+As you can see, this can become very expensive. Furtunately there is a lunch menu. The menu is 8.50 Fr.<br>
+It includes a soup and four plates. A soup is 2.50 Fr.<br>
+The lunch menu is only from Monday to Friday between (including) 11:00 a.m. and (ecluding) 5:00 p.m.<br>
+For the calculation the time of payment is used.<br>
+
+Calculate the end price:
 
 **Example:**
 <br><br>
 
-|                                                  |            |
-|--------------------------------------------------|------------|
-|5 x Blue                                          | = 4.75 Fr. |
-|5 x Grey                                          | = 24.75 Fr.|
-|1 x Grey, 1 x Green, 1 x Yellow, 1 x Red, 1 x Blue| = 14.75 Fr.|
+|                                        |             |
+|----------------------------------------|-------------|
+|1 x Soup, 2 x Grey, 2 x Green, 2 x Blue | = 10.40 Fr. |
+|1 x Soup, 2 x Grey, 3 x Green, 2 x Red  | = 16.35 Fr. |
+|1 x Soup, 2 x Grey, 3 x Green, 2 x Red  | = 28.15 Fr. |
 
 <br><br>
 
 ## Interpretation
 
-The base story stipulates that:
-Plate prices are based on colors - the prices are stipulated in the PDF. Following the [Single Responsibility Principle](https://en.wikipedia.org/wiki/Single-responsibility_principle), we cannot have price calculation AND price stipulation in a single class, therefore there is a predefined need for a service that provide prices per plate color.
+The system should have different calculation strategies, one for menu calculations and another for the regular prices.
+There should be some analysis on whether the payment date of the week and time is within a certain range.
+Ther should also be some analysis of the chosen plates to group them in suitable menu options.
 
-The solution here was to create the Class *PlatePriceService*, responsible to provide the prices as shown in the Requirements.
-Using TDD, the class was created based on the tests needed for the story to work.
-
-When the Price provider was ready it was the time to build the Calculator service.
-The calculator service was also built using TDD. No user interface was built.
-
-The solution was created following MVC pattern, although only the Model (*Restaurant.Domain*) and Controller (*Restaurant.BillCalculator.Application*) projects were created.
-
-The inputs for the calculation are *Plate* classes (from Domain). During the tests we defined a set of static plates (one for each color), that were reused accross all tests.
+Open Questions:
+1) The User story says that the lunch includes a soup and four plates. Are soups considered to be plates? If a user asks for 5 soups should them be grouped into a single menu?
+    Assumption #1 - Soups are not considered plates. A menu is consisted of a soup + 4 sushi plates for this user story.
+2) How should the remaining plates be grouped into the menus? Grouping menus in a different order can generate different prices.
+    Assumption #2 - Plates should be grouped searching optimal prices (minimum payment values)
+3) Can we have menus with a soup and less than 4 plates? Yes. If the menu is cheaper than the regular values, we can have 1 soup + N plates, where N is up to 4.
+   Assumption #3 - Although a menu includes a soup and four plates, the client can group a soup and N<=4 sushi plates. In a practical way if the restaurant wouldn't give the discount the client could request the extra plates and throw them away just to pay less, which does not make sense.
+4) Using the time of payment could probably be unpratical - securing an indefinite amount of money and calculate the transaction value at the exact same time can be complex - for the simplicity of the exercise we have named the method that calculate the value to be paid as PayBill and wwe are setting up the date time inside the method.
+    Assumption #4 - payment time is a time defined within the PayBill method execution.
+5)  In order to facilitate testing a IClock interface was defined, allowing time travel
+    Assumption #5 - IClock should be injected with DateTime.Now

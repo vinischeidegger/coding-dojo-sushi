@@ -57,7 +57,7 @@ namespace Restaurant.BillCalculator.Application.Services
             List<BasePlate> menuPlatesList = basePlatesList.GetRange(0, maxCount);
             menuPlatesList.Add(soup);
             BasePlate[] menuPlates = menuPlatesList.ToArray();
-            decimal originalPrice = this.SumPrice(menuPlates) + soup.Price;
+            decimal originalPrice = this.SumPrice(menuPlates);
             calculateAsMenu = originalPrice > this.menuPrice;
             BasePlate[] remainingItems = null;
 

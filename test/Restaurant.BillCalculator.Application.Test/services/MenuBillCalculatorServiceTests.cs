@@ -177,5 +177,85 @@ namespace Restaurant.BillCalculator.Application.Test
             Assert.Equal(expectedTotal, total);
         }
 
+        /// <summary>
+        /// Method to test bill calculation for Assumption 3
+        /// </summary>
+        [Fact]
+        public void PriceServiceShouldCalculateMenuPricesEvenIfClientOrderedLessThan4PlatesIfPricesMakesSense ()
+        {
+            // Arrange
+            int greyPlateQuantity = 2;
+            IEnumerable<SushiPlate> greyPlates = Enumerable.Repeat(greyPlate, greyPlateQuantity);
+            List<BasePlate> plates = new List<BasePlate> { soupPlate };
+            plates.AddRange(greyPlates);
+            decimal expectedTotal = 8.5m;
+
+            // Act
+            decimal total = calculatorService.CalculateTotalPrice(plates.ToArray());
+
+            // Assert
+            Assert.Equal(expectedTotal, total);
+        }
+
+        /// <summary>
+        /// Method to test bill calculation for Assumption 3
+        /// </summary>
+        [Fact]
+        public void PriceServiceShouldCalculateOptimalPricesEvenIfClientOrderedLessThan4PlatesIfPricesMakesSense()
+        {
+            // Arrange
+            int greyPlateQuantity = 2;
+            IEnumerable<SushiPlate> greyPlates = Enumerable.Repeat(greyPlate, greyPlateQuantity);
+            List<BasePlate> plates = new List<BasePlate> { soupPlate, soupPlate };
+            plates.AddRange(greyPlates);
+            decimal expectedTotal = 11m;
+
+            // Act
+            decimal total = calculatorService.CalculateTotalPrice(plates.ToArray());
+
+            // Assert
+            Assert.Equal(expectedTotal, total);
+        }
+
+        /// <summary>
+        /// Method to test bill calculation for Assumption 3
+        /// </summary>
+        [Fact]
+        public void PriceServiceShouldCalculateTwoMenus()
+        {
+            // Arrange
+            int greyPlateQuantity = 6;
+            IEnumerable<SushiPlate> greyPlates = Enumerable.Repeat(greyPlate, greyPlateQuantity);
+            List<BasePlate> plates = new List<BasePlate> { soupPlate, soupPlate };
+            plates.AddRange(greyPlates);
+            decimal expectedTotal = 17m;
+
+            // Act
+            decimal total = calculatorService.CalculateTotalPrice(plates.ToArray());
+
+            // Assert
+            Assert.Equal(expectedTotal, total);
+        }
+
+        /// <summary>
+        /// Method to test bill calculation for Assumption 3
+        /// </summary>
+        [Fact]
+        public void PriceServiceShouldCalculateOneMenuPlusPlates()
+        {
+            // Arrange
+            int greyPlateQuantity = 5;
+            IEnumerable<SushiPlate> greyPlates = Enumerable.Repeat(greyPlate, greyPlateQuantity);
+            List<BasePlate> plates = new List<BasePlate> { soupPlate, soupPlate };
+            plates.AddRange(greyPlates);
+            decimal expectedTotal = 8.5m + 2.5m + 4.95m;
+
+            // Act
+            decimal total = calculatorService.CalculateTotalPrice(plates.ToArray());
+
+            // Assert
+            Assert.Equal(expectedTotal, total);
+        }
+
     }
 }

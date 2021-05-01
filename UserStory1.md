@@ -1,11 +1,7 @@
-# User Story 2
+# User Story 1
 
-As you can see, this can become very expensive. Furtunately there is a lunch menu. The menu is 8.50 Fr.<br>
-It includes a soup and four plates. A soup is 2.50 Fr.<br>
-The lunch menu is only from Monday to Friday between (including) 11:00 a.m. and (ecluding) 5:00 p.m.<br>
-For the calculation the time of payment is used.<br>
-
-Calculate the end price:
+To keep an eye on the costs, you want to develop a small app which calculates the total price depending on the chosen plates. **A user interface is NOT necessary. Parsing inputs is also NOT necessary. Use static inputs.**<br><br>Calculate the price of the chosen plates.
+<br><br>
 
 **Example:**
 <br><br>
