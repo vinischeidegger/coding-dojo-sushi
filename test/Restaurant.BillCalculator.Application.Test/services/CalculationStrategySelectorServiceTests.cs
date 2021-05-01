@@ -23,10 +23,10 @@ namespace Restaurant.BillCalculator.Application.Test.services
         }
 
         [Fact]
-        public void MenuShouldBeUsedWhenThereIsSoupAndTimeIsWithinRange_AtStart_Test()
+        public void MenuShouldBeUsedWhenThereIsSoupAndTimeIsWithinRange_Monday_AtStart_Test()
         {
             // Arrange
-            DateTime elevenAm = new DateTime(2021, 5, 1, 11, 0, 0);
+            DateTime elevenAm = new DateTime(2021, 5, 3, 11, 0, 0);
             BasePlate[] plates = new BasePlate[] { soupPlate, greyPlate, greyPlate, greenPlate, greenPlate, bluePlate };
             CalculationStrategy expectedCalculationStrategy = CalculationStrategy.MenuStrategy;
 
@@ -38,12 +38,42 @@ namespace Restaurant.BillCalculator.Application.Test.services
         }
 
         [Fact]
-        public void MenuShouldBeUsedWhenThereIsSoupAndTimeIsWithinRange_JustBeforeEnd_Test()
+        public void MenuShouldBeUsedWhenThereIsSoupAndTimeIsWithinRange_Monday_JustBeforeEnd_Test()
+        {
+            // Arrange
+            DateTime elevenAm = new DateTime(2021, 5, 3, 16, 59, 59); // Monday
+            BasePlate[] plates = new BasePlate[] { soupPlate, greyPlate, greyPlate, greenPlate, greenPlate, bluePlate };
+            CalculationStrategy expectedCalculationStrategy = CalculationStrategy.MenuStrategy;
+
+            // Act
+            CalculationStrategy chosenCalculationStrategy = this.strategySelector.GetCalculationStrategy(elevenAm, plates);
+
+            //Assert
+            Assert.Equal(expectedCalculationStrategy, chosenCalculationStrategy);
+        }
+
+        [Fact]
+        public void MenuShouldBeUsedWhenThereIsSoupAndTimeIsNotWithinRange_Saturday_AtStart_Test()
+        {
+            // Arrange
+            DateTime elevenAm = new DateTime(2021, 5, 1, 11, 0, 0);
+            BasePlate[] plates = new BasePlate[] { soupPlate, greyPlate, greyPlate, greenPlate, greenPlate, bluePlate };
+            CalculationStrategy expectedCalculationStrategy = CalculationStrategy.RegularStrategy;
+
+            // Act
+            CalculationStrategy chosenCalculationStrategy = this.strategySelector.GetCalculationStrategy(elevenAm, plates);
+
+            //Assert
+            Assert.Equal(expectedCalculationStrategy, chosenCalculationStrategy);
+        }
+
+        [Fact]
+        public void MenuShouldBeUsedWhenThereIsSoupAndTimeIsNotWithinRange_Saturday_JustBeforeEnd_Test()
         {
             // Arrange
             DateTime elevenAm = new DateTime(2021, 5, 1, 16, 59, 59);
             BasePlate[] plates = new BasePlate[] { soupPlate, greyPlate, greyPlate, greenPlate, greenPlate, bluePlate };
-            CalculationStrategy expectedCalculationStrategy = CalculationStrategy.MenuStrategy;
+            CalculationStrategy expectedCalculationStrategy = CalculationStrategy.RegularStrategy;
 
             // Act
             CalculationStrategy chosenCalculationStrategy = this.strategySelector.GetCalculationStrategy(elevenAm, plates);

@@ -55,7 +55,7 @@ namespace Restaurant.BillCalculator.Application.Test
         public void TotalPriceShouldbeZeroWhenPlatesIsNull_Test()
         {
             // Arrange
-            SushiPlate[] plates = null;
+            BasePlate[] plates = null;
 
             // Act
             decimal total = calculatorService.CalculateTotalPrice(plates);
@@ -104,13 +104,20 @@ namespace Restaurant.BillCalculator.Application.Test
         public void PriceServiceShouldCalculateCorrectValuesAsReqExample1_UsingLiteral_Test()
         {
             // Arrange
-            int bluePlateQuantity = 5;
+            int greyPlateQuantity = 2;
+            IEnumerable<SushiPlate> greyPlates = Enumerable.Repeat(greyPlate, greyPlateQuantity);
+            int greenPlateQuantity = 2;
+            IEnumerable<SushiPlate> greenPlates = Enumerable.Repeat(greenPlate, greenPlateQuantity);
+            int bluePlateQuantity = 2;
             IEnumerable<SushiPlate> bluePlates = Enumerable.Repeat(bluePlate, bluePlateQuantity);
-            SushiPlate[] plates = bluePlates.ToArray();
-            decimal expectedTotal = 4.75m;// BLUE_PLATE_PRICE * bluePlateQuantity;
+            List<BasePlate> plates = new List<BasePlate> { soupPlate };
+            plates.AddRange(greyPlates);
+            plates.AddRange(greenPlates);
+            plates.AddRange(bluePlates);
+            decimal expectedTotal = 10.40m;// BLUE_PLATE_PRICE * bluePlateQuantity;
 
             // Act
-            decimal total = calculatorService.CalculateTotalPrice(plates);
+            decimal total = calculatorService.CalculateTotalPrice(plates.ToArray());
 
             // Assert
             Assert.Equal(expectedTotal, total);
@@ -123,13 +130,20 @@ namespace Restaurant.BillCalculator.Application.Test
         public void PriceServiceShouldCalculateCorrectValuesAsReqExample2_UsingLiteral_Test()
         {
             // Arrange
-            int greyPlateQuantity = 5;
-            IEnumerable<SushiPlate> greyPlates = Enumerable.Repeat(greyPlate, greyPlateQuantity);
-            SushiPlate[] plates = greyPlates.ToArray();
-            decimal expectedTotal = 24.75m;// GREY_PLATE_PRICE * greyPlateQuantity;
+            int greyPlateQuantity = 2;
+            IEnumerable<SushiPlate> greyPlates = Enumerable.Repeat(bluePlate, greyPlateQuantity);
+            int greenPlateQuantity = 2;
+            IEnumerable<SushiPlate> greenPlates = Enumerable.Repeat(greenPlate, greenPlateQuantity);
+            int redPlateQuantity = 2;
+            IEnumerable<SushiPlate> bluePlates = Enumerable.Repeat(bluePlate, redPlateQuantity);
+            List<BasePlate> plates = new List<BasePlate> { soupPlate };
+            plates.AddRange(greyPlates);
+            plates.AddRange(greenPlates);
+            plates.AddRange(bluePlates);
+            decimal expectedTotal = 16.35m;// BLUE_PLATE_PRICE * bluePlateQuantity;
 
             // Act
-            decimal total = calculatorService.CalculateTotalPrice(plates);
+            decimal total = calculatorService.CalculateTotalPrice(plates.ToArray());
 
             // Assert
             Assert.Equal(expectedTotal, total);

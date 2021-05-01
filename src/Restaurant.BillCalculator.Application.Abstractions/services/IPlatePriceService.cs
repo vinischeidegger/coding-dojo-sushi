@@ -5,5 +5,7 @@ namespace Restaurant.BillCalculator.Application.Services
     public interface IPlatePriceService
     {
         decimal GetPlatePrice(BasePlate plate);
+
+        decimal GetMenuPrice();
     }
 }

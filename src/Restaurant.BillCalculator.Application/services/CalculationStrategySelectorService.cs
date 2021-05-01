@@ -11,12 +11,17 @@ namespace Restaurant.BillCalculator.Application.Services
     {
         private readonly TimeSpan menuStartTime;
         private readonly TimeSpan menuEndTime;
+        private readonly DayOfWeek menuStartDay;
+        private readonly DayOfWeek menuEndDay;
+
         private readonly Dictionary<CalculationStrategy, IBillCalculatorService> strategySelector;
 
         public CalculationStrategySelectorService(IRegularBillCalculatorService regularBillCalculator, IMenuBillCalculatorService menuBillCalculator)
         {
             this.menuStartTime = new TimeSpan(11, 0, 0); //10 o'clock
             this.menuEndTime = new TimeSpan(17, 0, 0); //12 o'clock
+            this.menuStartDay = DayOfWeek.Monday;
+            this.menuEndDay = DayOfWeek.Friday;
             this.strategySelector = new Dictionary<CalculationStrategy, IBillCalculatorService> 
             {
                 { CalculationStrategy.RegularStrategy, regularBillCalculator },
@@ -51,12 +56,15 @@ namespace Restaurant.BillCalculator.Application.Services
             if (plates == null) return CalculationStrategy.RegularStrategy;
 
             TimeSpan timeOfDay = paymentDateTime.TimeOfDay;
+            DayOfWeek dayOfWeek = paymentDateTime.DayOfWeek;
 
             //within menu hours?
-            if (timeOfDay >= menuStartTime && timeOfDay < menuEndTime)
-                //hasSoup = true && other 4 plates?
-                if (plates.FirstOrDefault(plate => plate is SoupPlate) != null && plates.Length > 4)
-                    return CalculationStrategy.MenuStrategy;
+            if (dayOfWeek >= menuStartDay && dayOfWeek <= menuEndDay)
+                //within menu hours?
+                if (timeOfDay >= menuStartTime && timeOfDay < menuEndTime)
+                    //hasSoup = true && other 4 plates?
+                    if (plates.FirstOrDefault(plate => plate is SoupPlate) != null && plates.Length > 4)
+                        return CalculationStrategy.MenuStrategy;
 
             return CalculationStrategy.RegularStrategy;
         }
