@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Restaurant.BillCalculator.Domain.Model;
+using System;
 
 namespace Restaurant.BillCalculator.Application.Services
 {
     public class BillCalculatorService
     {
 
-        public void CalculateTotalPrice()
+        public decimal CalculateTotalPrice(Plate[] plates = default)
         {
+            if (plates == null) return 0m;
             throw new NotImplementedException("Method not implemented");
         }
     }

@@ -1,4 +1,5 @@
 using Restaurant.BillCalculator.Application.Services;
+using Restaurant.BillCalculator.Domain.Model;
 using System;
 using Xunit;
 
@@ -14,6 +15,8 @@ namespace Restaurant.BillCalculator.Application.Test
         {
             // Arrange
             BillCalculatorService calculatorService = new BillCalculatorService();
+
+            Plate[] plates = null;
 
             // Act
             calculatorService.CalculateTotalPrice();
