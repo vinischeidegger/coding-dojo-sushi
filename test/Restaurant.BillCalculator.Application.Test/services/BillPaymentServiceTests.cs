@@ -11,13 +11,15 @@ namespace Restaurant.BillCalculator.Application.Test
     {
         private readonly BillPaymentService billPaymentService;
         private readonly Mock<ICalculationStrategySelectorService> strategySelectorMock;
+        private readonly Mock<IClock> clockMock;
         private readonly RegularBillCalculatorService regularStrategy;
 
         public BillPaymentServiceTests()
         {
             this.regularStrategy = new RegularBillCalculatorService(new PlatePriceService());
             this.strategySelectorMock = new Mock<ICalculationStrategySelectorService>();
-            this.billPaymentService = new BillPaymentService(strategySelectorMock.Object);
+            this.clockMock = new Mock<IClock>();
+            this.billPaymentService = new BillPaymentService(strategySelectorMock.Object, this.clockMock.Object);
         }
 
         [Fact]

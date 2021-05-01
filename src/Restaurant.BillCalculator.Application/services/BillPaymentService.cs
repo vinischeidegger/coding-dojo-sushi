@@ -9,15 +9,17 @@ namespace Restaurant.BillCalculator.Application.Services
     public class BillPaymentService
     {
         private readonly ICalculationStrategySelectorService calculationStrategySelector;
+        private readonly IClock clock;
 
-        public BillPaymentService(ICalculationStrategySelectorService calculationStrategySelector)
+        public BillPaymentService(ICalculationStrategySelectorService calculationStrategySelector, IClock clock)
         {
             this.calculationStrategySelector = calculationStrategySelector;
+            this.clock = clock;
         }
 
         public decimal PayBill(BasePlate[] plates = null)
         {
-            CalculationStrategy calculationStrategy = this.calculationStrategySelector.GetCalculationStrategy(DateTime.Now, plates);
+            CalculationStrategy calculationStrategy = this.calculationStrategySelector.GetCalculationStrategy(this.clock.Now, plates);
             IBillCalculatorService billCalculatorService = this.calculationStrategySelector.GetBillCalculatorStrategy(calculationStrategy);
             return billCalculatorService.CalculateTotalPrice(plates);
         }

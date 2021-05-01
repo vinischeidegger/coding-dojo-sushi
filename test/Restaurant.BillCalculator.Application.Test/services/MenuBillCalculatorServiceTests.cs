@@ -16,6 +16,7 @@ namespace Restaurant.BillCalculator.Application.Test
         private const decimal RED_PLATE_PRICE = 1.95m;
         private const decimal BLUE_PLATE_PRICE = 0.95m;
         private const decimal SOUP_PRICE = 2.50m;
+        private const decimal MENU_PRICE = 8.50m;
 
         private readonly MenuBillCalculatorService calculatorService;
         private readonly Mock<IPlatePriceService> platePriceServiceMock;
@@ -29,6 +30,7 @@ namespace Restaurant.BillCalculator.Application.Test
             this.platePriceServiceMock.Setup(svc => svc.GetPlatePrice(redPlate)).Returns(RED_PLATE_PRICE);
             this.platePriceServiceMock.Setup(svc => svc.GetPlatePrice(bluePlate)).Returns(BLUE_PLATE_PRICE);
             this.platePriceServiceMock.Setup(svc => svc.GetPlatePrice(soupPlate)).Returns(SOUP_PRICE);
+            this.platePriceServiceMock.Setup(svc => svc.GetMenuPrice()).Returns(MENU_PRICE);
             this.calculatorService = new MenuBillCalculatorService(this.platePriceServiceMock.Object);
         }
 
@@ -131,15 +133,15 @@ namespace Restaurant.BillCalculator.Application.Test
         {
             // Arrange
             int greyPlateQuantity = 2;
-            IEnumerable<SushiPlate> greyPlates = Enumerable.Repeat(bluePlate, greyPlateQuantity);
-            int greenPlateQuantity = 2;
+            IEnumerable<SushiPlate> greyPlates = Enumerable.Repeat(greyPlate, greyPlateQuantity);
+            int greenPlateQuantity = 3;
             IEnumerable<SushiPlate> greenPlates = Enumerable.Repeat(greenPlate, greenPlateQuantity);
             int redPlateQuantity = 2;
-            IEnumerable<SushiPlate> bluePlates = Enumerable.Repeat(bluePlate, redPlateQuantity);
+            IEnumerable<SushiPlate> redPlates = Enumerable.Repeat(redPlate, redPlateQuantity);
             List<BasePlate> plates = new List<BasePlate> { soupPlate };
             plates.AddRange(greyPlates);
             plates.AddRange(greenPlates);
-            plates.AddRange(bluePlates);
+            plates.AddRange(redPlates);
             decimal expectedTotal = 16.35m;// BLUE_PLATE_PRICE * bluePlateQuantity;
 
             // Act
@@ -150,17 +152,26 @@ namespace Restaurant.BillCalculator.Application.Test
         }
 
         /// <summary>
-        /// Method to test bill calculation as per User Story 1 - Example 3
+        /// Method to test bill calculation as per User Story 1 - Example 2 enhanced
         /// </summary>
         [Fact]
-        public void PriceServiceShouldCalculateCorrectValuesAsReqExample3_UsingLiteral_Test()
+        public void PriceServiceShouldCalculateCorrectValuesAsReqExample2WithAnotherSoup_UsingLiteral_Test()
         {
             // Arrange
-            SushiPlate[] plates = new SushiPlate[] { greyPlate, greenPlate, yellowPlate, redPlate, bluePlate };
-            decimal expectedTotal = 14.75m;// GREY_PLATE_PRICE * greyPlateQuantity;
+            int greyPlateQuantity = 2;
+            IEnumerable<SushiPlate> greyPlates = Enumerable.Repeat(greyPlate, greyPlateQuantity);
+            int greenPlateQuantity = 3;
+            IEnumerable<SushiPlate> greenPlates = Enumerable.Repeat(greenPlate, greenPlateQuantity);
+            int redPlateQuantity = 2;
+            IEnumerable<SushiPlate> redPlates = Enumerable.Repeat(redPlate, redPlateQuantity);
+            List<BasePlate> plates = new List<BasePlate> { soupPlate, soupPlate };
+            plates.AddRange(greyPlates);
+            plates.AddRange(greenPlates);
+            plates.AddRange(redPlates);
+            decimal expectedTotal = 17m;// BLUE_PLATE_PRICE * bluePlateQuantity;
 
             // Act
-            decimal total = calculatorService.CalculateTotalPrice(plates);
+            decimal total = calculatorService.CalculateTotalPrice(plates.ToArray());
 
             // Assert
             Assert.Equal(expectedTotal, total);
