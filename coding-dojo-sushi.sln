@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{8AD1A53F-3
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant.BillCalculator.Application.IntegrationTest", "test\Restaurant.BillCalculator.Application.IntegrationTest\Restaurant.BillCalculator.Application.IntegrationTest.csproj", "{F5B66186-D239-406F-82E4-248165019BFC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant.BillCalculator.Application.Abstractions", "src\Restaurant.BillCalculator.Application.Abstractions\Restaurant.BillCalculator.Application.Abstractions.csproj", "{89AD9854-032F-4B65-AFFC-F3809ACC1153}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{F5B66186-D239-406F-82E4-248165019BFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5B66186-D239-406F-82E4-248165019BFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5B66186-D239-406F-82E4-248165019BFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89AD9854-032F-4B65-AFFC-F3809ACC1153}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89AD9854-032F-4B65-AFFC-F3809ACC1153}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89AD9854-032F-4B65-AFFC-F3809ACC1153}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89AD9854-032F-4B65-AFFC-F3809ACC1153}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +52,7 @@ Global
 		{5F10E094-28BC-40E8-9365-D24A2293FF00} = {C7AA9F14-0A1A-4883-B981-A2899C436174}
 		{AF5D2A6A-3C55-460F-80A6-CA475296F8BF} = {C7AA9F14-0A1A-4883-B981-A2899C436174}
 		{F5B66186-D239-406F-82E4-248165019BFC} = {8AD1A53F-3889-4530-B1DF-6DD93891EC84}
+		{89AD9854-032F-4B65-AFFC-F3809ACC1153} = {C7AA9F14-0A1A-4883-B981-A2899C436174}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E5B5988B-B957-4401-B98B-479B40C73C57}

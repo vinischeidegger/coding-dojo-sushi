@@ -1,4 +1,5 @@
 ﻿using Restaurant.BillCalculator.Domain.Model;
+using Restaurant.Domain.model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,9 +62,4 @@ namespace Restaurant.BillCalculator.Application.Services
         }
     }
 
-    public enum CalculationStrategy
-    {
-        RegularStrategy,
-        MenuStrategy
-    }
 }

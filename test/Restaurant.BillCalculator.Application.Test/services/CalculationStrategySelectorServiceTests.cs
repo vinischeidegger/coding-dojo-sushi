@@ -1,6 +1,7 @@
 ﻿using Moq;
 using Restaurant.BillCalculator.Application.Services;
 using Restaurant.BillCalculator.Domain.Model;
+using Restaurant.Domain.model;
 using System;
 using System.Collections.Generic;
 using System.Text;
