@@ -31,15 +31,21 @@ namespace Restaurant.BillCalculator.Application.Services
         /// <returns></returns>
         public CalculationStrategy GetCalculationStrategy(DateTime paymentDateTime, BasePlate[] plates = null)
         {
-            return this.GetStrategy(paymentDateTime, plates);
+            return this.GetStrategyOnPaymentTimeForPlates(paymentDateTime, plates);
         }
-        public IBillCalculatorService GetBillCalculatorStrategy(DateTime paymentDateTime, BasePlate[] plates = null)
+
+        /// <summary>
+        /// Returns the instance of the IBillCalculatorService to be used for the calculation of the bill
+        /// </summary>
+        /// <param name="paymentDateTime"></param>
+        /// <param name="plates"></param>
+        /// <returns></returns>
+        public IBillCalculatorService GetBillCalculatorStrategy(CalculationStrategy calculationStrategy)
         {
-            CalculationStrategy calculationStrategy = this.GetStrategy(paymentDateTime, plates);
             return this.strategySelector[calculationStrategy];
         }
 
-        private CalculationStrategy GetStrategy(DateTime paymentDateTime, BasePlate[] plates)
+        private CalculationStrategy GetStrategyOnPaymentTimeForPlates(DateTime paymentDateTime, BasePlate[] plates)
         {
             if (plates == null) return CalculationStrategy.RegularStrategy;
 

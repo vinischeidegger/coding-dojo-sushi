@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Restaurant.BillCalculator.Application.Test.services
 {
-    public class CalculationStrategySelectorServiceTests: PlateTestBase
+    public class CalculationStrategySelectorServiceTests : PlateTestBase
     {
         private readonly CalculationStrategySelectorService strategySelector;
         private readonly Mock<IRegularBillCalculatorService> regularCalculatorMock;
@@ -25,7 +25,7 @@ namespace Restaurant.BillCalculator.Application.Test.services
         public void MenuShouldBeUsedWhenThereIsSoupAndTimeIsWithinRange_AtStart_Test()
         {
             // Arrange
-            DateTime elevenAm = new DateTime(2021, 5, 1, 11, 0,0 );
+            DateTime elevenAm = new DateTime(2021, 5, 1, 11, 0, 0);
             BasePlate[] plates = new BasePlate[] { soupPlate, greyPlate, greyPlate, greenPlate, greenPlate, bluePlate };
             CalculationStrategy expectedCalculationStrategy = CalculationStrategy.MenuStrategy;
 
@@ -71,7 +71,7 @@ namespace Restaurant.BillCalculator.Application.Test.services
         {
             // Arrange
             DateTime elevenAm = new DateTime(2021, 5, 1, 11, 0, 0);
-            BasePlate[] plates = new BasePlate[] { greyPlate, greyPlate, greyPlate};
+            BasePlate[] plates = new BasePlate[] { greyPlate, greyPlate, greyPlate };
             CalculationStrategy expectedCalculationStrategy = CalculationStrategy.RegularStrategy;
 
             // Act
@@ -109,6 +109,24 @@ namespace Restaurant.BillCalculator.Application.Test.services
 
             //Assert
             Assert.Equal(expectedCalculationStrategy, chosenCalculationStrategy);
+        }
+
+        [Fact]
+        public void CalculationStrategyShouldReturnCorrectCalculator()
+        {
+            //Arrange
+            CalculationStrategy menuStrategy  = CalculationStrategy.MenuStrategy;
+            CalculationStrategy regularStrategy = CalculationStrategy.RegularStrategy;
+
+            //Act
+            IBillCalculatorService menuBillCalculatorService = this.strategySelector.GetBillCalculatorStrategy(menuStrategy);
+            IBillCalculatorService regularBillCalculatorService = this.strategySelector.GetBillCalculatorStrategy(regularStrategy);
+            bool isMenuType = menuBillCalculatorService is IMenuBillCalculatorService;
+            bool isRegularType = regularBillCalculatorService is IRegularBillCalculatorService;
+
+            //Assert
+            Assert.True(isMenuType);
+            Assert.True(isRegularType);
         }
     }
 }
