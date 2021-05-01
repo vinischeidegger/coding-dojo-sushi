@@ -9,5 +9,6 @@ namespace Restaurant.BillCalculator.Application.Test
         private protected readonly static SushiPlate yellowPlate = new SushiPlate(Color.Yellow);
         private protected readonly static SushiPlate redPlate = new SushiPlate(Color.Red);
         private protected readonly static SushiPlate bluePlate = new SushiPlate(Color.Blue);
+        private protected readonly static SoupPlate soupPlate = new SoupPlate();
     }
 }
