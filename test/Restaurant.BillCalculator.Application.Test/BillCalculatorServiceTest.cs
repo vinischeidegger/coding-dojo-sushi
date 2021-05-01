@@ -2,6 +2,8 @@ using Moq;
 using Restaurant.BillCalculator.Application.Services;
 using Restaurant.BillCalculator.Domain.Model;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace Restaurant.BillCalculator.Application.Test
@@ -50,7 +52,7 @@ namespace Restaurant.BillCalculator.Application.Test
         }
 
         /// <summary>
-        /// Method to test null parameters in bill calculation
+        /// Method to test bill calculation with Single Input
         /// </summary>
         [Fact]
         public void PriceServiceShouldCalculateCorrectValuesForSinglePlate_Test()
@@ -67,5 +69,46 @@ namespace Restaurant.BillCalculator.Application.Test
             Assert.Equal(greyPlatePrice, total);
         }
 
+        /// <summary>
+        /// Method to test bill calculation with Multiple Input
+        /// </summary>
+        [Fact]
+        public void PriceServiceShouldCalculateCorrectValuesForMultiplePlates_Test()
+        {
+            // Arrange
+            decimal greyPlatePrice = 4.95m;
+            decimal greenPlatePrice = 3.95m;
+            this.platePriceServiceMock.Setup(svc => svc.GetPlatePrice(greyPlate)).Returns(greyPlatePrice);
+            this.platePriceServiceMock.Setup(svc => svc.GetPlatePrice(greenPlate)).Returns(greenPlatePrice);
+            Plate[] plates = new Plate[] { greyPlate, greenPlate };
+            decimal expectedTotal = greyPlatePrice + greenPlatePrice;
+
+            // Act
+            decimal total = calculatorService.CalculateTotalPrice(plates);
+
+            // Assert
+            Assert.Equal(expectedTotal, total);
+        }
+
+        /// <summary>
+        /// Method to test bill calculation as per User Story 1 - Example 1
+        /// </summary>
+        [Fact]
+        public void PriceServiceShouldCalculateCorrectValuesAsReqExample1_Test()
+        {
+            // Arrange
+            decimal bluePlatePrice = 0.95m;
+            int bluePlateQuantity = 5;
+            this.platePriceServiceMock.Setup(svc => svc.GetPlatePrice(bluePlate)).Returns(bluePlatePrice);
+            IEnumerable<Plate> bluePlates = Enumerable.Repeat(bluePlate, bluePlateQuantity);
+            Plate[] plates = bluePlates.ToArray();
+            decimal expectedTotal = bluePlatePrice * bluePlateQuantity;
+
+            // Act
+            decimal total = calculatorService.CalculateTotalPrice(plates);
+
+            // Assert
+            Assert.Equal(expectedTotal, total);
+        }
     }
 }
