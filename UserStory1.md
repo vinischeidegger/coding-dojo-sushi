@@ -6,11 +6,12 @@ To keep an eye on the costs, you want to develop a small app which calculates th
 **Example:**
 <br><br>
 
-| <!-- -->                                         | <!-- -->   |
+|                                                  |            |
 |--------------------------------------------------|------------|
 |5 x Blue                                          | = 4.75 Fr. |
 |5 x Grey                                          | = 24.75 Fr.|
 |1 x Grey, 1 x Green, 1 x Yellow, 1 x Red, 1 x Blue| = 14.75 Fr.|
+
 <br><br>
 
 ## Interpretation
