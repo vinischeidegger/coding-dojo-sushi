@@ -4,6 +4,6 @@ namespace Restaurant.BillCalculator.Application.Services
 {
     public interface IBillCalculatorService
     {
-        decimal CalculateTotalPrice(SushiPlate[] sushiPlates = null);
+        decimal CalculateTotalPrice(BasePlate[] sushiPlates = null);
     }
 }

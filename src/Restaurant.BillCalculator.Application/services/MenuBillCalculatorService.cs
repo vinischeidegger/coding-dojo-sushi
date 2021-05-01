@@ -7,7 +7,7 @@ namespace Restaurant.BillCalculator.Application.Services
 {
     public class MenuBillCalculatorService : IMenuBillCalculatorService
     {
-        public decimal CalculateTotalPrice(SushiPlate[] sushiPlates = null)
+        public decimal CalculateTotalPrice(BasePlate[] sushiPlates = null)
         {
             throw new NotImplementedException();
         }

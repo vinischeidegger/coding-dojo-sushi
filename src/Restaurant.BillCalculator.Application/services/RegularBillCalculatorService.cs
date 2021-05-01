@@ -13,10 +13,10 @@ namespace Restaurant.BillCalculator.Application.Services
             this.platePriceService = platePriceService;
         }
 
-        public decimal CalculateTotalPrice(SushiPlate[] sushiPlates = default)
+        public decimal CalculateTotalPrice(BasePlate[] plates = default)
         {
-            if (sushiPlates == null) return 0m;
-            return sushiPlates.Select(plate => { plate.Price = this.platePriceService.GetPlatePrice(plate); return plate.Price; }).Sum();
+            if (plates == null) return 0m;
+            return plates.Select(plate => { plate.Price = this.platePriceService.GetPlatePrice(plate); return plate.Price; }).Sum();
         }
     }
 }

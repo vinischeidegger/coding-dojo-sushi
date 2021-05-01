@@ -18,7 +18,8 @@ namespace Restaurant.BillCalculator.Application.Services
         public decimal PayBill(BasePlate[] plates = null)
         {
             CalculationStrategy calculationStrategy = this.calculationStrategySelector.GetCalculationStrategy(DateTime.Now, plates);
-            return 0m;
+            IBillCalculatorService billCalculatorService = this.calculationStrategySelector.GetBillCalculatorStrategy(calculationStrategy);
+            return billCalculatorService.CalculateTotalPrice(plates);
         }
     }
 }
