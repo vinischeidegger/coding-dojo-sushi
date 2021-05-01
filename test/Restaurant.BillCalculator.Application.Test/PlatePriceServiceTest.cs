@@ -1,5 +1,7 @@
 ﻿using Restaurant.BillCalculator.Application.Services;
 using Restaurant.BillCalculator.Domain.Model;
+using System;
+using System.Reflection;
 using Xunit;
 
 namespace Restaurant.BillCalculator.Application.Test
@@ -42,14 +44,25 @@ namespace Restaurant.BillCalculator.Application.Test
         }
 
         /// <summary>
-        /// Method to test plate prices
+        /// Method to test null plate exception
         /// </summary>
         [Fact]
         public void CalculateNullPlatePriceTest()
         {
+            // Arrange
             PlatePriceService calculatorService = new PlatePriceService();
-            calculatorService.GetPlatePrice(null);
-                
+            MethodInfo methodInfo = calculatorService.GetType().GetMethod("GetPlatePrice");
+            ParameterInfo[] parameterInfos = methodInfo.GetParameters();
+            ParameterInfo parameterInfo = parameterInfos[0];
+            string plateParamName = parameterInfo.Name;
+            Plate plate = null;
+
+            // Act
+            Action nullPlateMethodCall = () => calculatorService.GetPlatePrice(plate);
+
+            // Assert
+            ArgumentNullException argumentNullException = Assert.Throws<ArgumentNullException>(nullPlateMethodCall);
+            Assert.Contains(plateParamName, argumentNullException.Message);
         }
     }
 }

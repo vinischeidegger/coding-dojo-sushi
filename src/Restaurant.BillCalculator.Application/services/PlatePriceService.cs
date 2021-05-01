@@ -7,8 +7,13 @@ namespace Restaurant.BillCalculator.Application.Services
 {
     public class PlatePriceService
     {
+        private const string NULL_PLATE_EXCEPTION = "The plate cannot be null";
+        private const string INVALID_ENUM_VALUE_EXCEPTION = "Plate Coler does not exist";
+
         public decimal GetPlatePrice(Plate plate)
         {
+            if (plate == null)  throw new ArgumentNullException(nameof(plate));
+
             switch (plate.Color)
             {
                 case Color.Grey:
@@ -22,7 +27,7 @@ namespace Restaurant.BillCalculator.Application.Services
                 case Color.Blue:
                     return 0.95m;
                 default:
-                    throw new ArgumentOutOfRangeException("Plate Coler does not exist");
+                    throw new ArgumentOutOfRangeException(INVALID_ENUM_VALUE_EXCEPTION);
             }
         }
     }
