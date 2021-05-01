@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Restaurant.BillCalculator.Application.Services
 {
-    public class PlatePriceService
+    public class PlatePriceService : IPlatePriceService
     {
         private const string NULL_PLATE_EXCEPTION = "The plate cannot be null";
         private const string INVALID_ENUM_VALUE_EXCEPTION = "Plate Coler does not exist";

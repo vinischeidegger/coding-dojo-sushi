@@ -6,13 +6,14 @@ using Xunit;
 
 namespace Restaurant.BillCalculator.Application.Test
 {
-    public class PlatePriceServiceTest
+    public class PlatePriceServiceTest : PlateTestBase
     {
-        private readonly static Plate greyPlate = new Plate(Color.Grey);
-        private readonly static Plate greenPlate = new Plate(Color.Green);
-        private readonly static Plate yellowPlate = new Plate(Color.Yellow);
-        private readonly static Plate redPlate = new Plate(Color.Red);
-        private readonly static Plate bluePlate = new Plate(Color.Blue);
+        PlatePriceService calculatorService;
+
+        public PlatePriceServiceTest()
+        {
+            this.calculatorService = new PlatePriceService();
+        }
 
         /// <summary>
         /// Method to test plate prices
@@ -21,7 +22,6 @@ namespace Restaurant.BillCalculator.Application.Test
         public void PriceServiceShouldReturnCorrectValues_Test()
         {
             // Arrange
-            PlatePriceService calculatorService = new PlatePriceService();
             decimal expectedGreyPrice = 4.95m;
             decimal expectedGreenPrice = 3.95m;
             decimal expectedYellowPrice = 2.95m;
@@ -29,11 +29,11 @@ namespace Restaurant.BillCalculator.Application.Test
             decimal expectedBluePrice = 0.95m;
 
             // Act
-            decimal greyPlatePrice = calculatorService.GetPlatePrice(greyPlate);
-            decimal greenPlatePrice = calculatorService.GetPlatePrice(greenPlate);
-            decimal yellowPlatePrice = calculatorService.GetPlatePrice(yellowPlate);
-            decimal redPlatePrice = calculatorService.GetPlatePrice(redPlate);
-            decimal bluePlatePrice = calculatorService.GetPlatePrice(bluePlate);
+            decimal greyPlatePrice = this.calculatorService.GetPlatePrice(greyPlate);
+            decimal greenPlatePrice = this.calculatorService.GetPlatePrice(greenPlate);
+            decimal yellowPlatePrice = this.calculatorService.GetPlatePrice(yellowPlate);
+            decimal redPlatePrice = this.calculatorService.GetPlatePrice(redPlate);
+            decimal bluePlatePrice = this.calculatorService.GetPlatePrice(bluePlate);
 
             // Assert
             Assert.Equal(expectedGreyPrice, greyPlatePrice);
@@ -50,7 +50,6 @@ namespace Restaurant.BillCalculator.Application.Test
         public void PriceServiceShouldThrowExceptionWhenParamIsNull_Test()
         {
             // Arrange
-            PlatePriceService calculatorService = new PlatePriceService();
             MethodInfo methodInfo = calculatorService.GetType().GetMethod("GetPlatePrice");
             ParameterInfo[] parameterInfos = methodInfo.GetParameters();
             ParameterInfo parameterInfo = parameterInfos[0];
@@ -58,7 +57,7 @@ namespace Restaurant.BillCalculator.Application.Test
             Plate plate = null;
 
             // Act
-            Action nullPlateMethodCall = () => calculatorService.GetPlatePrice(plate);
+            Action nullPlateMethodCall = () => this.calculatorService.GetPlatePrice(plate);
 
             // Assert
             ArgumentNullException argumentNullException = Assert.Throws<ArgumentNullException>(nullPlateMethodCall);
