@@ -10,12 +10,23 @@ namespace Restaurant.BillCalculator.Application.Test
 {
     public class BillCalculatorServiceTest : PlateTestBase
     {
+        private const decimal GREY_PLATE_PRICE = 4.95m;
+        private const decimal GREEN_PLATE_PRICE = 3.95m;
+        private const decimal YELLOW_PLATE_PRICE = 2.95m;
+        private const decimal RED_PLATE_PRICE = 1.95m;
+        private const decimal BLUE_PLATE_PRICE = 0.95m;
+
         private readonly BillCalculatorService calculatorService;
         private readonly Mock<IPlatePriceService> platePriceServiceMock;
 
         public BillCalculatorServiceTest()
         {
             this.platePriceServiceMock = new Mock<IPlatePriceService>();
+            this.platePriceServiceMock.Setup(svc => svc.GetPlatePrice(greyPlate)).Returns(GREY_PLATE_PRICE);
+            this.platePriceServiceMock.Setup(svc => svc.GetPlatePrice(greenPlate)).Returns(GREEN_PLATE_PRICE);
+            this.platePriceServiceMock.Setup(svc => svc.GetPlatePrice(yellowPlate)).Returns(YELLOW_PLATE_PRICE);
+            this.platePriceServiceMock.Setup(svc => svc.GetPlatePrice(redPlate)).Returns(RED_PLATE_PRICE);
+            this.platePriceServiceMock.Setup(svc => svc.GetPlatePrice(bluePlate)).Returns(BLUE_PLATE_PRICE);
             this.calculatorService = new BillCalculatorService(this.platePriceServiceMock.Object);
         }
 
@@ -58,15 +69,13 @@ namespace Restaurant.BillCalculator.Application.Test
         public void PriceServiceShouldCalculateCorrectValuesForSinglePlate_Test()
         {
             // Arrange
-            decimal greyPlatePrice = 4.95m;
-            this.platePriceServiceMock.Setup(svc => svc.GetPlatePrice(greyPlate)).Returns(greyPlatePrice);
             Plate[] plates = new Plate[] {greyPlate};
 
             // Act
             decimal total = calculatorService.CalculateTotalPrice(plates);
 
             // Assert
-            Assert.Equal(greyPlatePrice, total);
+            Assert.Equal(GREY_PLATE_PRICE, total);
         }
 
         /// <summary>
@@ -76,12 +85,8 @@ namespace Restaurant.BillCalculator.Application.Test
         public void PriceServiceShouldCalculateCorrectValuesForMultiplePlates_Test()
         {
             // Arrange
-            decimal greyPlatePrice = 4.95m;
-            decimal greenPlatePrice = 3.95m;
-            this.platePriceServiceMock.Setup(svc => svc.GetPlatePrice(greyPlate)).Returns(greyPlatePrice);
-            this.platePriceServiceMock.Setup(svc => svc.GetPlatePrice(greenPlate)).Returns(greenPlatePrice);
             Plate[] plates = new Plate[] { greyPlate, greenPlate };
-            decimal expectedTotal = greyPlatePrice + greenPlatePrice;
+            decimal expectedTotal = GREY_PLATE_PRICE + GREEN_PLATE_PRICE;
 
             // Act
             decimal total = calculatorService.CalculateTotalPrice(plates);
@@ -94,15 +99,13 @@ namespace Restaurant.BillCalculator.Application.Test
         /// Method to test bill calculation as per User Story 1 - Example 1
         /// </summary>
         [Fact]
-        public void PriceServiceShouldCalculateCorrectValuesAsReqExample1_Test()
+        public void PriceServiceShouldCalculateCorrectValuesAsReqExample1_UsingLiteral_Test()
         {
             // Arrange
-            decimal bluePlatePrice = 0.95m;
             int bluePlateQuantity = 5;
-            this.platePriceServiceMock.Setup(svc => svc.GetPlatePrice(bluePlate)).Returns(bluePlatePrice);
             IEnumerable<Plate> bluePlates = Enumerable.Repeat(bluePlate, bluePlateQuantity);
             Plate[] plates = bluePlates.ToArray();
-            decimal expectedTotal = bluePlatePrice * bluePlateQuantity;
+            decimal expectedTotal = 4.75m;// BLUE_PLATE_PRICE * bluePlateQuantity;
 
             // Act
             decimal total = calculatorService.CalculateTotalPrice(plates);
@@ -110,5 +113,42 @@ namespace Restaurant.BillCalculator.Application.Test
             // Assert
             Assert.Equal(expectedTotal, total);
         }
+
+        /// <summary>
+        /// Method to test bill calculation as per User Story 1 - Example 2
+        /// </summary>
+        [Fact]
+        public void PriceServiceShouldCalculateCorrectValuesAsReqExample2_UsingLiteral_Test()
+        {
+            // Arrange
+            int greyPlateQuantity = 5;
+            IEnumerable<Plate> greyPlates = Enumerable.Repeat(greyPlate, greyPlateQuantity);
+            Plate[] plates = greyPlates.ToArray();
+            decimal expectedTotal = 24.75m;// GREY_PLATE_PRICE * greyPlateQuantity;
+
+            // Act
+            decimal total = calculatorService.CalculateTotalPrice(plates);
+
+            // Assert
+            Assert.Equal(expectedTotal, total);
+        }
+
+        /// <summary>
+        /// Method to test bill calculation as per User Story 1 - Example 3
+        /// </summary>
+        [Fact]
+        public void PriceServiceShouldCalculateCorrectValuesAsReqExample3_UsingLiteral_Test()
+        {
+            // Arrange
+            Plate[] plates = new Plate[] { greyPlate, greenPlate, yellowPlate, redPlate, bluePlate };
+            decimal expectedTotal = 14.75m;// GREY_PLATE_PRICE * greyPlateQuantity;
+
+            // Act
+            decimal total = calculatorService.CalculateTotalPrice(plates);
+
+            // Assert
+            Assert.Equal(expectedTotal, total);
+        }
+
     }
 }
