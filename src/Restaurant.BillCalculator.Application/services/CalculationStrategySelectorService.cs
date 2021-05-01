@@ -7,6 +7,9 @@ using System.Text;
 
 namespace Restaurant.BillCalculator.Application.Services
 {
+    /// <summary>
+    /// This class is the calculation strategy selector service. It contains the rules used to define the strategy used to calculate the bill value.
+    /// </summary>
     public class CalculationStrategySelectorService : ICalculationStrategySelectorService
     {
         private readonly TimeSpan menuStartTime;

@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Restaurant.BillCalculator.Application.Services
 {
+    /// <summary>
+    /// This class repesents the Payment Service
+    /// </summary>
     public class BillPaymentService
     {
         private readonly ICalculationStrategySelectorService calculationStrategySelector;

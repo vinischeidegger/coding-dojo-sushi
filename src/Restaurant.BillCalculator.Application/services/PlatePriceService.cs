@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Restaurant.BillCalculator.Application.Services
 {
+    /// <summary>
+    /// This class provides prices each of the Plates.
+    /// </summary>
     public class PlatePriceService : IPlatePriceService
     {
         private const string NULL_PLATE_EXCEPTION = "The plate cannot be null";

@@ -7,6 +7,9 @@ using System.Text;
 
 namespace Restaurant.BillCalculator.Application.Services
 {
+    /// <summary>
+    /// This class represents the Menu Calculator Service Strategy. It should be used to calculate meal packages prices.
+    /// </summary>
     public class MenuBillCalculatorService : IMenuBillCalculatorService
     {
         private IPlatePriceService platePriceService;
@@ -26,11 +29,10 @@ namespace Restaurant.BillCalculator.Application.Services
             this.PopulatePrices(plates);
 
             BasePlate soupPlate = plates.FirstOrDefault(plate => plate is SoupPlate);
-            bool containsSoup = soupPlate != null;
-            bool fivePlates = plates.Length >= 5;
-            if (containsSoup || fivePlates)
+            bool shouldCheckMenuPrices = this.AnalyzeWhetherShouldCheckMenu(soupPlate, plates);
+            if(shouldCheckMenuPrices)
             {
-                MenuCalculationResult calculationResult = ExtractPartialMenu(soupPlate, plates);
+                MenuCalculationResult calculationResult = this.ExtractPartialMenu(soupPlate, plates);
                 if (calculationResult.CalculateAsMenu)
                 {
                     return this.menuPrice + this.CalculateTotalPrice(calculationResult.RemainingPlates);
@@ -43,30 +45,57 @@ namespace Restaurant.BillCalculator.Application.Services
             }
         }
 
+        private bool AnalyzeWhetherShouldCheckMenu(BasePlate soupPlate, BasePlate[] plates)
+        {
+            bool containsSoup = soupPlate != null;
+            bool fivePlates = plates.Length >= 5;
+            bool redOrBlue = plates.FirstOrDefault(plate => {
+                if (plate is SushiPlate)
+                {
+                    SushiPlate sushiPlate = (SushiPlate)plate;
+                    return sushiPlate.Color.Equals(Color.Red) || sushiPlate.Color.Equals(Color.Blue);
+                }
+                return false;
+            }) != null;
+            return ((containsSoup || fivePlates) && redOrBlue);
+        }
+
         private MenuCalculationResult ExtractPartialMenu(BasePlate soup, BasePlate[] plates)
         {
-
-            List<BasePlate> basePlatesList = new List<BasePlate>(plates);
-            basePlatesList.RemoveAll(plate => plate is SoupPlate);
-            // Optimize price plate ordering by most expensive
-            
-
             bool calculateAsMenu = false;
+            List<BasePlate> basePlatesList = new List<BasePlate>(plates);
+            List<BasePlate> menuPlatesList;
+            BasePlate[] menuPlates;
+            if (soup != null)
+            {
+                //Soup menu
+                basePlatesList.RemoveAll(plate => plate is SoupPlate);
 
-            basePlatesList.Sort((x, y) => y.Price.CompareTo(x.Price));
-            int maxCount = basePlatesList.Count > 4 ? 4 : basePlatesList.Count;
-            List<BasePlate> menuPlatesList = basePlatesList.GetRange(0, maxCount);
-            menuPlatesList.Add(soup);
-            BasePlate[] menuPlates = menuPlatesList.ToArray();
-            decimal originalPrice = this.SumPrice(menuPlates);
-            calculateAsMenu = originalPrice > this.menuPrice;
+                // Optimize price plate ordering by most expensive
+                basePlatesList.Sort((x, y) => y.Price.CompareTo(x.Price));
+                int maxCount = basePlatesList.Count > 4 ? 4 : basePlatesList.Count;
+                menuPlatesList = basePlatesList.GetRange(0, maxCount);
+                menuPlatesList.Add(soup);
+                menuPlates = menuPlatesList.ToArray();
+                decimal originalPrice = this.SumPrice(menuPlates);
+                calculateAsMenu = originalPrice > this.menuPrice;
+            }
+            else
+            {
+                //Five plates menu
+                basePlatesList.Sort((x, y) => y.Price.CompareTo(x.Price));
+                menuPlatesList = basePlatesList.GetRange(0, 5);
+                menuPlates = menuPlatesList.ToArray();
+                decimal originalPrice = this.SumPrice(menuPlates);
+                calculateAsMenu = originalPrice > this.menuPrice;
+            }
+
             BasePlate[] remainingItems = null;
-
             if (calculateAsMenu)
             {
-                List<BasePlate> workingList = new List<BasePlate>(plates);
-                menuPlatesList.ForEach(plate => workingList.Remove(plate));
-                remainingItems = workingList.ToArray();
+                List<BasePlate> fullListToRemoveMenu = new List<BasePlate>(plates);
+                menuPlatesList.ForEach(plate => fullListToRemoveMenu.Remove(plate));
+                remainingItems = fullListToRemoveMenu.ToArray();
             }
             else
             {

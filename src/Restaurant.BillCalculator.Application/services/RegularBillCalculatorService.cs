@@ -4,6 +4,10 @@ using System.Linq;
 
 namespace Restaurant.BillCalculator.Application.Services
 {
+    /// <summary>
+    /// This class represent the Regular Bill Calculation Service Strategy.
+    /// It uses a price service to get prices and then calculate the Total price by multiplying price times quantity
+    /// </summary>
     public class RegularBillCalculatorService : IRegularBillCalculatorService
     {
         private readonly IPlatePriceService platePriceService;
