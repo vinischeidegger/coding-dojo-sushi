@@ -6,11 +6,11 @@ using Xunit;
 
 namespace Restaurant.BillCalculator.Application.Test
 {
-    public class PlatePriceServiceTest : PlateTestBase
+    public class PlatePriceServiceTests : PlateTestBase
     {
         PlatePriceService calculatorService;
 
-        public PlatePriceServiceTest()
+        public PlatePriceServiceTests()
         {
             this.calculatorService = new PlatePriceService();
         }
@@ -54,7 +54,7 @@ namespace Restaurant.BillCalculator.Application.Test
             ParameterInfo[] parameterInfos = methodInfo.GetParameters();
             ParameterInfo parameterInfo = parameterInfos[0];
             string plateParamName = parameterInfo.Name;
-            Plate plate = null;
+            SushiPlate plate = null;
 
             // Act
             Action nullPlateMethodCall = () => this.calculatorService.GetPlatePrice(plate);

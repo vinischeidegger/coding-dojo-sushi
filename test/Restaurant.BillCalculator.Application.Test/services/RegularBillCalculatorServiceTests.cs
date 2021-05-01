@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Restaurant.BillCalculator.Application.Test
 {
-    public class BillCalculatorServiceTest : PlateTestBase
+    public class RegularBillCalculatorServiceTests : PlateTestBase
     {
         private const decimal GREY_PLATE_PRICE = 4.95m;
         private const decimal GREEN_PLATE_PRICE = 3.95m;
@@ -16,10 +16,10 @@ namespace Restaurant.BillCalculator.Application.Test
         private const decimal RED_PLATE_PRICE = 1.95m;
         private const decimal BLUE_PLATE_PRICE = 0.95m;
 
-        private readonly BillCalculatorService calculatorService;
+        private readonly RegularBillCalculatorService calculatorService;
         private readonly Mock<IPlatePriceService> platePriceServiceMock;
 
-        public BillCalculatorServiceTest()
+        public RegularBillCalculatorServiceTests()
         {
             this.platePriceServiceMock = new Mock<IPlatePriceService>();
             this.platePriceServiceMock.Setup(svc => svc.GetPlatePrice(greyPlate)).Returns(GREY_PLATE_PRICE);
@@ -27,7 +27,7 @@ namespace Restaurant.BillCalculator.Application.Test
             this.platePriceServiceMock.Setup(svc => svc.GetPlatePrice(yellowPlate)).Returns(YELLOW_PLATE_PRICE);
             this.platePriceServiceMock.Setup(svc => svc.GetPlatePrice(redPlate)).Returns(RED_PLATE_PRICE);
             this.platePriceServiceMock.Setup(svc => svc.GetPlatePrice(bluePlate)).Returns(BLUE_PLATE_PRICE);
-            this.calculatorService = new BillCalculatorService(this.platePriceServiceMock.Object);
+            this.calculatorService = new RegularBillCalculatorService(this.platePriceServiceMock.Object);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace Restaurant.BillCalculator.Application.Test
         public void TotalPriceShouldbeZeroWhenPlatesIsNull_Test()
         {
             // Arrange
-            Plate[] plates = null;
+            SushiPlate[] plates = null;
 
             // Act
             decimal total = calculatorService.CalculateTotalPrice(plates);
@@ -69,7 +69,7 @@ namespace Restaurant.BillCalculator.Application.Test
         public void PriceServiceShouldCalculateCorrectValuesForSinglePlate_Test()
         {
             // Arrange
-            Plate[] plates = new Plate[] {greyPlate};
+            SushiPlate[] plates = new SushiPlate[] {greyPlate};
 
             // Act
             decimal total = calculatorService.CalculateTotalPrice(plates);
@@ -85,7 +85,7 @@ namespace Restaurant.BillCalculator.Application.Test
         public void PriceServiceShouldCalculateCorrectValuesForMultiplePlates_Test()
         {
             // Arrange
-            Plate[] plates = new Plate[] { greyPlate, greenPlate };
+            SushiPlate[] plates = new SushiPlate[] { greyPlate, greenPlate };
             decimal expectedTotal = GREY_PLATE_PRICE + GREEN_PLATE_PRICE;
 
             // Act
@@ -103,8 +103,8 @@ namespace Restaurant.BillCalculator.Application.Test
         {
             // Arrange
             int bluePlateQuantity = 5;
-            IEnumerable<Plate> bluePlates = Enumerable.Repeat(bluePlate, bluePlateQuantity);
-            Plate[] plates = bluePlates.ToArray();
+            IEnumerable<SushiPlate> bluePlates = Enumerable.Repeat(bluePlate, bluePlateQuantity);
+            SushiPlate[] plates = bluePlates.ToArray();
             decimal expectedTotal = 4.75m;// BLUE_PLATE_PRICE * bluePlateQuantity;
 
             // Act
@@ -122,8 +122,8 @@ namespace Restaurant.BillCalculator.Application.Test
         {
             // Arrange
             int greyPlateQuantity = 5;
-            IEnumerable<Plate> greyPlates = Enumerable.Repeat(greyPlate, greyPlateQuantity);
-            Plate[] plates = greyPlates.ToArray();
+            IEnumerable<SushiPlate> greyPlates = Enumerable.Repeat(greyPlate, greyPlateQuantity);
+            SushiPlate[] plates = greyPlates.ToArray();
             decimal expectedTotal = 24.75m;// GREY_PLATE_PRICE * greyPlateQuantity;
 
             // Act
@@ -140,7 +140,7 @@ namespace Restaurant.BillCalculator.Application.Test
         public void PriceServiceShouldCalculateCorrectValuesAsReqExample3_UsingLiteral_Test()
         {
             // Arrange
-            Plate[] plates = new Plate[] { greyPlate, greenPlate, yellowPlate, redPlate, bluePlate };
+            SushiPlate[] plates = new SushiPlate[] { greyPlate, greenPlate, yellowPlate, redPlate, bluePlate };
             decimal expectedTotal = 14.75m;// GREY_PLATE_PRICE * greyPlateQuantity;
 
             // Act

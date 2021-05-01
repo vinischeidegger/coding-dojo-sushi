@@ -10,7 +10,7 @@ namespace Restaurant.BillCalculator.Application.Services
         private const string NULL_PLATE_EXCEPTION = "The plate cannot be null";
         private const string INVALID_ENUM_VALUE_EXCEPTION = "Plate Coler does not exist";
 
-        public decimal GetPlatePrice(Plate plate)
+        public decimal GetPlatePrice(SushiPlate plate)
         {
             if (plate == null)  throw new ArgumentNullException(nameof(plate));
 

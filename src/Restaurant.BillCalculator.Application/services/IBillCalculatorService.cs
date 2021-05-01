@@ -2,8 +2,8 @@
 
 namespace Restaurant.BillCalculator.Application.Services
 {
-    public interface IPlatePriceService
+    public interface IBillCalculatorService
     {
-        decimal GetPlatePrice(SushiPlate plate);
+        decimal CalculateTotalPrice(SushiPlate[] sushiPlates = null);
     }
 }
