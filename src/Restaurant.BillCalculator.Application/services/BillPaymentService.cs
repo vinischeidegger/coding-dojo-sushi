@@ -7,9 +7,17 @@ namespace Restaurant.BillCalculator.Application.Services
 {
     public class BillPaymentService
     {
-        public void PayBill(BasePlate[] plates = null)
-        {
+        private readonly ICalculationStrategySelectorService calculationStrategySelector;
 
+        public BillPaymentService(ICalculationStrategySelectorService calculationStrategySelector)
+        {
+            this.calculationStrategySelector = calculationStrategySelector;
+        }
+
+        public decimal PayBill(BasePlate[] plates = null)
+        {
+            CalculationStrategy calculationStrategy = this.calculationStrategySelector.GetCalculationStrategy(DateTime.Now, plates);
+            return 0m;
         }
     }
 }

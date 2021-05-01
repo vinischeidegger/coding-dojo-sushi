@@ -2,8 +2,7 @@
 
 namespace Restaurant.BillCalculator.Application.Services
 {
-    public interface IPlatePriceService
+    internal class SoupPlate : BasePlate
     {
-        decimal GetPlatePrice(BasePlate plate);
     }
 }
