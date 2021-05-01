@@ -63,7 +63,7 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
             plates.AddRange(greenPlates);
             plates.AddRange(bluePlates);
             this.clockMock.Setup(clk => clk.Now).Returns(new DateTime(2021, 5, 3, 11, 0, 0));
-            decimal expectedValue = 10.40m;// BLUE_PLATE_PRICE * bluePlateQuantity;
+            decimal expectedValue = 10.40m;
 
             // Act
             decimal paidValue = this.billPaymentService.PayBill(plates.ToArray());
@@ -76,13 +76,49 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
         [Fact]
         public void UserStory2Integration_Example2_Test()
         {
+            // Arrange
+            int greyPlateQuantity = 2;
+            IEnumerable<SushiPlate> greyPlates = Enumerable.Repeat(greyPlate, greyPlateQuantity);
+            int greenPlateQuantity = 3;
+            IEnumerable<SushiPlate> greenPlates = Enumerable.Repeat(greenPlate, greenPlateQuantity);
+            int redPlateQuantity = 2;
+            IEnumerable<SushiPlate> redPlates = Enumerable.Repeat(redPlate, redPlateQuantity);
+            List<BasePlate> plates = new List<BasePlate> { soupPlate };
+            plates.AddRange(greyPlates);
+            plates.AddRange(greenPlates);
+            plates.AddRange(redPlates);
+            this.clockMock.Setup(clk => clk.Now).Returns(new DateTime(2021, 5, 3, 11, 0, 0));
+            decimal expectedTotal = 16.35m;
 
+            // Act
+            decimal total = this.billPaymentService.PayBill(plates.ToArray());
+
+            // Assert
+            Assert.Equal(expectedTotal, total);
         }
 
         [Fact]
         public void UserStory2Integration_Example3_Test()
         {
+            // Arrange
+            int greyPlateQuantity = 2;
+            IEnumerable<SushiPlate> greyPlates = Enumerable.Repeat(greyPlate, greyPlateQuantity);
+            int greenPlateQuantity = 3;
+            IEnumerable<SushiPlate> greenPlates = Enumerable.Repeat(greenPlate, greenPlateQuantity);
+            int redPlateQuantity = 2;
+            IEnumerable<SushiPlate> redPlates = Enumerable.Repeat(redPlate, redPlateQuantity);
+            List<BasePlate> plates = new List<BasePlate> { soupPlate };
+            plates.AddRange(greyPlates);
+            plates.AddRange(greenPlates);
+            plates.AddRange(redPlates);
+            this.clockMock.Setup(clk => clk.Now).Returns(new DateTime(2021, 5, 1, 11, 0, 0));
+            decimal expectedTotal = 28.15m;
 
+            // Act
+            decimal total = this.billPaymentService.PayBill(plates.ToArray());
+
+            // Assert
+            Assert.Equal(expectedTotal, total);
         }
     }
 
