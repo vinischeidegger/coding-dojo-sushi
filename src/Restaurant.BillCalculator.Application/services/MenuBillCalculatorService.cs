@@ -7,8 +7,17 @@ namespace Restaurant.BillCalculator.Application.Services
 {
     public class MenuBillCalculatorService : IMenuBillCalculatorService
     {
-        public decimal CalculateTotalPrice(BasePlate[] sushiPlates = null)
+        private IPlatePriceService platePriceService;
+
+        public MenuBillCalculatorService(IPlatePriceService platePriceService)
         {
+            this.platePriceService = platePriceService;
+        }
+
+        public decimal CalculateTotalPrice(BasePlate[] plates = null)
+        {
+            if (plates == null) return 0m;
+
             throw new NotImplementedException();
         }
     }
