@@ -10,12 +10,17 @@ namespace Restaurant.BillCalculator.Application.Services
     {
         private readonly TimeSpan menuStartTime;
         private readonly TimeSpan menuEndTime;
+        private readonly Dictionary<CalculationStrategy, IBillCalculatorService> strategySelector;
 
-        public CalculationStrategySelectorService()
+        public CalculationStrategySelectorService(IRegularBillCalculatorService regularBillCalculator, IMenuBillCalculatorService menuBillCalculator)
         {
             this.menuStartTime = new TimeSpan(11, 0, 0); //10 o'clock
             this.menuEndTime = new TimeSpan(17, 0, 0); //12 o'clock
-
+            this.strategySelector = new Dictionary<CalculationStrategy, IBillCalculatorService> 
+            {
+                { CalculationStrategy.RegularStrategy, regularBillCalculator },
+                { CalculationStrategy.MenuStrategy, menuBillCalculator}
+            };
         }
 
         /// <summary>
@@ -25,6 +30,16 @@ namespace Restaurant.BillCalculator.Application.Services
         /// <param name="plates"></param>
         /// <returns></returns>
         public CalculationStrategy GetCalculationStrategy(DateTime paymentDateTime, BasePlate[] plates = null)
+        {
+            return this.GetStrategy(paymentDateTime, plates);
+        }
+        public IBillCalculatorService GetBillCalculatorStrategy(DateTime paymentDateTime, BasePlate[] plates = null)
+        {
+            CalculationStrategy calculationStrategy = this.GetStrategy(paymentDateTime, plates);
+            return this.strategySelector[calculationStrategy];
+        }
+
+        private CalculationStrategy GetStrategy(DateTime paymentDateTime, BasePlate[] plates)
         {
             if (plates == null) return CalculationStrategy.RegularStrategy;
 

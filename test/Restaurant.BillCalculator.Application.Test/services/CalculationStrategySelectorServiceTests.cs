@@ -1,4 +1,5 @@
-﻿using Restaurant.BillCalculator.Application.Services;
+﻿using Moq;
+using Restaurant.BillCalculator.Application.Services;
 using Restaurant.BillCalculator.Domain.Model;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,14 @@ namespace Restaurant.BillCalculator.Application.Test.services
     public class CalculationStrategySelectorServiceTests: PlateTestBase
     {
         private readonly CalculationStrategySelectorService strategySelector;
+        private readonly Mock<IRegularBillCalculatorService> regularCalculatorMock;
+        private readonly Mock<IMenuBillCalculatorService> menuCalculatorMock;
 
         public CalculationStrategySelectorServiceTests()
         {
-            this.strategySelector = new CalculationStrategySelectorService();
+            this.regularCalculatorMock = new Mock<IRegularBillCalculatorService>();
+            this.menuCalculatorMock = new Mock<IMenuBillCalculatorService>();
+            this.strategySelector = new CalculationStrategySelectorService(this.regularCalculatorMock.Object, this.menuCalculatorMock.Object);
         }
 
         [Fact]

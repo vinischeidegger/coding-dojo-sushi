@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Restaurant.BillCalculator.Application.Services
 {
-    public class RegularBillCalculatorService : IBillCalculatorService
+    public class RegularBillCalculatorService : IRegularBillCalculatorService
     {
         private readonly IPlatePriceService platePriceService;
 
