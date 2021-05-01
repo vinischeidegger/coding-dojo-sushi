@@ -18,7 +18,7 @@ namespace Restaurant.BillCalculator.Application.Test
         /// Method to test plate prices
         /// </summary>
         [Fact]
-        public void CalculatePlatePriceTest()
+        public void PriceServiceShouldReturnCorrectValues_Test()
         {
             // Arrange
             PlatePriceService calculatorService = new PlatePriceService();
@@ -47,7 +47,7 @@ namespace Restaurant.BillCalculator.Application.Test
         /// Method to test null plate exception
         /// </summary>
         [Fact]
-        public void CalculateNullPlatePriceTest()
+        public void PriceServiceShouldThrowExceptionWhenParamIsNull_Test()
         {
             // Arrange
             PlatePriceService calculatorService = new PlatePriceService();
