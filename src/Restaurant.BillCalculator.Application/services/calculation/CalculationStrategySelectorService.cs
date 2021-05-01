@@ -12,9 +12,21 @@ namespace Restaurant.BillCalculator.Application.Services
         {
         }
 
-        public CalculationStrategy GetCalculationStrategy(DateTime paymentDateTime, BasePlate[] plates)
+        /// <summary>
+        /// Returns one of the Calculation Strategies based on the time of the payment and selected plates.
+        /// </summary>
+        /// <param name="paymentDateTime"></param>
+        /// <param name="plates"></param>
+        /// <returns></returns>
+        public CalculationStrategy GetCalculationStrategy(DateTime paymentDateTime, BasePlate[] plates = null)
         {
-            return CalculationStrategy.MenuStrategy;
+            if (plates == null) return CalculationStrategy.RegularStrategy;
+
+            //hasSoup = true && other 4 plates
+            if (plates.FirstOrDefault(plate => plate is SoupPlate) != null && plates.Length > 4)
+                return CalculationStrategy.MenuStrategy;
+
+            return CalculationStrategy.RegularStrategy;
         }
     }
 
