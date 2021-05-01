@@ -8,8 +8,14 @@ namespace Restaurant.BillCalculator.Application.Services
 {
     public class CalculationStrategySelectorService : ICalculationStrategySelectorService
     {
+        private readonly TimeSpan menuStartTime;
+        private readonly TimeSpan menuEndTime;
+
         public CalculationStrategySelectorService()
         {
+            this.menuStartTime = new TimeSpan(11, 0, 0); //10 o'clock
+            this.menuEndTime = new TimeSpan(17, 0, 0); //12 o'clock
+
         }
 
         /// <summary>
@@ -22,9 +28,13 @@ namespace Restaurant.BillCalculator.Application.Services
         {
             if (plates == null) return CalculationStrategy.RegularStrategy;
 
-            //hasSoup = true && other 4 plates
-            if (plates.FirstOrDefault(plate => plate is SoupPlate) != null && plates.Length > 4)
-                return CalculationStrategy.MenuStrategy;
+            TimeSpan timeOfDay = paymentDateTime.TimeOfDay;
+
+            //within menu hours?
+            if (timeOfDay >= menuStartTime && timeOfDay < menuEndTime)
+                //hasSoup = true && other 4 plates?
+                if (plates.FirstOrDefault(plate => plate is SoupPlate) != null && plates.Length > 4)
+                    return CalculationStrategy.MenuStrategy;
 
             return CalculationStrategy.RegularStrategy;
         }
