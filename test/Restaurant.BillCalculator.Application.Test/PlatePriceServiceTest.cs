@@ -41,5 +41,15 @@ namespace Restaurant.BillCalculator.Application.Test
             Assert.Equal(expectedBluePrice, bluePlatePrice);
         }
 
+        /// <summary>
+        /// Method to test plate prices
+        /// </summary>
+        [Fact]
+        public void CalculateNullPlatePriceTest()
+        {
+            PlatePriceService calculatorService = new PlatePriceService();
+            calculatorService.GetPlatePrice(null);
+                
+        }
     }
 }
