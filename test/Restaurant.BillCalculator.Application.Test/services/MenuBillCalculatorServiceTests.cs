@@ -257,5 +257,22 @@ namespace Restaurant.BillCalculator.Application.Test
             Assert.Equal(expectedTotal, total);
         }
 
+        /// <summary>
+        /// Method to test bill calculation for Assumption 3
+        /// </summary>
+        [Fact]
+        public void FivePlatesMenuTest()
+        {
+            // Arrange
+            int greyPlateQuantity = 5;
+            IEnumerable<SushiPlate> greyPlates = Enumerable.Repeat(greyPlate, greyPlateQuantity);
+            decimal expectedTotal = 8.5m;
+
+            // Act
+            decimal total = calculatorService.CalculateTotalPrice(greyPlates.ToArray());
+
+            // Assert
+            Assert.Equal(expectedTotal, total);
+        }
     }
 }

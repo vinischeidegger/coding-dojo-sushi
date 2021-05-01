@@ -27,7 +27,8 @@ namespace Restaurant.BillCalculator.Application.Services
 
             BasePlate soupPlate = plates.FirstOrDefault(plate => plate is SoupPlate);
             bool containsSoup = soupPlate != null;
-            if (containsSoup)
+            bool fivePlates = plates.Length >= 5;
+            if (containsSoup || fivePlates)
             {
                 MenuCalculationResult calculationResult = ExtractPartialMenu(soupPlate, plates);
                 if (calculationResult.CalculateAsMenu)
