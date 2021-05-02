@@ -1,8 +1,6 @@
 ﻿using Restaurant.BillCalculator.Domain.Model;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Restaurant.BillCalculator.Application.Services
 {
@@ -29,14 +27,19 @@ namespace Restaurant.BillCalculator.Application.Services
 
             this.PopulatePrices(plates);
 
-            BasePlate soupPlate = plates.FirstOrDefault(plate => plate is SoupPlate);
-            bool shouldCheckMenuPrices = this.AnalyzeWhetherShouldCheckMenu(plates);
-            if(shouldCheckMenuPrices)
+            return this.CalculatePrices(plates);
+        }
+
+        private decimal CalculatePrices(BasePlate[] plates)
+        {
+            if (plates == null || plates.Length == 0) return 0m;
+
+            if (plates.ShouldBeConsiderForMenu())
             {
                 MenuCalculationResult calculationResult = this.splitStrategyService.ExtractOptimalMenu(plates, this.SumPrice, this.menuPrice);
                 if (calculationResult.CalculateAsMenu)
                 {
-                    return this.menuPrice + this.CalculateTotalPrice(calculationResult.RemainingPlates);
+                    return this.menuPrice + this.CalculatePrices(calculationResult.RemainingPlates);
                 }
                 return this.SumPrice(calculationResult.RemainingPlates);
             }
@@ -44,21 +47,6 @@ namespace Restaurant.BillCalculator.Application.Services
             {
                 return this.SumPrice(plates);
             }
-        }
-
-        private bool AnalyzeWhetherShouldCheckMenu(BasePlate[] plates)
-        {
-            bool containsSoup = plates.FirstOrDefault(plate => plate is SoupPlate) != null;
-            bool fivePlates = plates.Length >= 5;
-            bool redOrBlue = plates.FirstOrDefault(plate => {
-                if (plate is SushiPlate)
-                {
-                    SushiPlate sushiPlate = (SushiPlate)plate;
-                    return sushiPlate.Color.Equals(Color.Red) || sushiPlate.Color.Equals(Color.Blue);
-                }
-                return false;
-            }) != null;
-            return (containsSoup || (fivePlates && redOrBlue));
         }
 
         private void PopulatePrices(BasePlate[] plates)

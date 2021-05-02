@@ -295,5 +295,31 @@ namespace Restaurant.BillCalculator.Application.Test
             // Assert
             Assert.Equal(expectedTotal, total);
         }
+
+        // Arrange
+        /// <summary>
+        /// Method to test bill calculation for Assumption 3
+        /// </summary>
+        [Fact]
+        public void FivePlates_OneBluePlate_Test()
+        {
+            int greyPlateQuantity = 2;
+            IEnumerable<SushiPlate> greyPlates = Enumerable.Repeat(greyPlate, greyPlateQuantity);
+            int greenPlateQuantity = 2;
+            IEnumerable<SushiPlate> greenPlates = Enumerable.Repeat(greenPlate, greenPlateQuantity);
+            int bluePlateQuantity = 1;
+            IEnumerable<SushiPlate> bluePlates = Enumerable.Repeat(bluePlate, bluePlateQuantity);
+            List<BasePlate> plates = new List<BasePlate> { };
+            plates.AddRange(greyPlates);
+            plates.AddRange(greenPlates);
+            plates.AddRange(bluePlates);
+            decimal expectedValue = 8.50m;
+
+            // Act
+            decimal paidValue = this.calculatorService.CalculateTotalPrice(plates.ToArray());
+
+            // Assert
+            Assert.Equal(expectedValue, paidValue);
+        }
     }
 }

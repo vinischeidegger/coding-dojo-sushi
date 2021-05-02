@@ -66,7 +66,7 @@ namespace Restaurant.BillCalculator.Application.Services
                 //within menu hours?
                 if (timeOfDay >= menuStartTime && timeOfDay < menuEndTime)
                     //hasSoup = true && other 4 plates?
-                    if (plates.FirstOrDefault(plate => plate is SoupPlate) != null && plates.Length > 4)
+                    if (plates.ShouldBeConsiderForMenu())
                         return CalculationStrategy.MenuStrategy;
 
             return CalculationStrategy.RegularStrategy;

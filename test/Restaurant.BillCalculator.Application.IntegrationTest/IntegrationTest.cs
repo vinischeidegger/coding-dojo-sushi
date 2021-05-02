@@ -120,6 +120,54 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
             // Assert
             Assert.Equal(expectedTotal, total);
         }
+
+        [Fact]
+        public void UserStory3Integration_Example1_Test()
+        {
+            // Arrange
+            int greyPlateQuantity = 2;
+            IEnumerable<SushiPlate> greyPlates = Enumerable.Repeat(greyPlate, greyPlateQuantity);
+            int greenPlateQuantity = 2;
+            IEnumerable<SushiPlate> greenPlates = Enumerable.Repeat(greenPlate, greenPlateQuantity);
+            int bluePlateQuantity = 1;
+            IEnumerable<SushiPlate> bluePlates = Enumerable.Repeat(bluePlate, bluePlateQuantity);
+            List<BasePlate> plates = new List<BasePlate> { };
+            plates.AddRange(greyPlates);
+            plates.AddRange(greenPlates);
+            plates.AddRange(bluePlates);
+            this.clockMock.Setup(clk => clk.Now).Returns(new DateTime(2021, 5, 3, 11, 0, 0));
+            decimal expectedValue = 8.50m;
+
+            // Act
+            decimal paidValue = this.billPaymentService.PayBill(plates.ToArray());
+
+            // Assert
+            Assert.Equal(expectedValue, paidValue);
+
+        }
+
+        [Fact]
+        public void UserStory3Integration_Example2_Test()
+        {
+            // Arrange
+            int greyPlateQuantity = 3;
+            IEnumerable<SushiPlate> greyPlates = Enumerable.Repeat(greyPlate, greyPlateQuantity);
+            int greenPlateQuantity = 2;
+            IEnumerable<SushiPlate> greenPlates = Enumerable.Repeat(greenPlate, greenPlateQuantity);
+            List<BasePlate> plates = new List<BasePlate> { };
+            plates.AddRange(greyPlates);
+            plates.AddRange(greenPlates);
+            this.clockMock.Setup(clk => clk.Now).Returns(new DateTime(2021, 5, 3, 11, 0, 0));
+            decimal expectedValue = (3 * 4.95m) + (2 * 3.95m);
+
+            // Act
+            decimal paidValue = this.billPaymentService.PayBill(plates.ToArray());
+
+            // Assert
+            Assert.Equal(expectedValue, paidValue);
+
+        }
+
     }
 
 }
