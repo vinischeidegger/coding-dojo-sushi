@@ -5,6 +5,7 @@ using Restaurant.BillCalculator.Domain.Model;
 using Restaurant.Domain.Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Xunit;
 
@@ -40,7 +41,7 @@ namespace Restaurant.BillCalculator.Application.Test.Services
         }
 
         [Fact]
-        public void CheckPersonOrderIsSummedTest()
+        public void CheckOptimizedBillPersonQuantityTest()
         {
             //Arrange
             Order order1 = new Order()
@@ -68,6 +69,38 @@ namespace Restaurant.BillCalculator.Application.Test.Services
             //Assert
             Assert.Equal(2, optimizedBill.PersonalPrice.Count);
             
+        }
+
+        [Fact]
+        public void CheckPersonOrderIsSummedTest()
+        {
+            //Arrange
+            Order order1 = new Order()
+            {
+                Person = "Person A",
+                Plates = new BasePlate[] { greyPlate, greyPlate }
+            };
+            Order order2 = new Order()
+            {
+                Person = "Person A",
+                Plates = new BasePlate[] { soupPlate, greenPlate, greenPlate }
+            };
+            Order order3 = new Order()
+            {
+                Person = "Person B",
+                Plates = new BasePlate[] { greyPlate }
+            };
+            IEnumerable<Order> mockOrders = new List<Order> { order1, order2, order3 };
+            this.orderRepositoryMock.Setup(repo => repo.GetAllOrders()).Returns(mockOrders);
+            this.priceRepositoryMock.Setup(price => price.GetPlatePrice(greyPlate)).Returns(4.95m);
+
+            //Act
+            OptimizedBill optimizedBill = this.orderService.PayAllOrders();
+
+            //Assert
+            Assert.Equal(2, optimizedBill.PersonalPrice.Count);
+            Assert.Equal(5, optimizedBill.PersonalPrice["Person A"].Plates.ToList().Count);
+
         }
 
     }

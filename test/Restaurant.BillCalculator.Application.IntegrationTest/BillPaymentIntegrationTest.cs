@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Restaurant.BillCalculator.Application.IntegrationTest
 {
-    public class IntegrationTest
+    public class BillPaymentIntegrationTest
     {
         private protected readonly static SushiPlate greyPlate = new SushiPlate(Color.Grey);
         private protected readonly static SushiPlate greenPlate = new SushiPlate(Color.Green);
@@ -26,7 +26,7 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
 
         private Mock<IClock> clockMock;
 
-        public IntegrationTest()
+        public BillPaymentIntegrationTest()
         {
             this.platePriceService = new InMemoryPriceRepository();
             this.regularBillCalculator = new RegularBillCalculatorService(platePriceService);

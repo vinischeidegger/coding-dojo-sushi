@@ -39,13 +39,14 @@ namespace Restaurant.BillCalculator.Application.Services
                 });
 
             var result = pricedOrders
-                .GroupBy(order => order.Person, (person, orders) => new PersonalPrice () { 
-                Person = person,
-                Orders = orders,
-                Plates = orders.SelectMany(order => order.Plates)
-            }).ToList();
+                .GroupBy(order => order.Person)
+                .ToDictionary(g => g.Key, g => new PersonalPrice () { 
+                Person = g.Key,
+                Orders = g.ToList(),
+                Plates = g.ToList().SelectMany(order => order.Plates)
+            });
 
-            foreach(var personPrice in result)
+            foreach(var personPrice in result.Values)
             {
                 personPrice.Total = this.regularBill.CalculateTotalPrice(personPrice.Plates.ToArray());
             }

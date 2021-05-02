@@ -6,6 +6,6 @@ namespace Restaurant.Domain.Model
 {
     public class OptimizedBill
     {
-        public IList<PersonalPrice> PersonalPrice { get; set; }
+        public IDictionary<string, PersonalPrice> PersonalPrice { get; set; }
     }
 }
