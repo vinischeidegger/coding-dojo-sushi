@@ -31,7 +31,7 @@ namespace Restaurant.BillCalculator.Application.Test
             this.platePriceServiceMock.Setup(svc => svc.GetPlatePrice(bluePlate)).Returns(BLUE_PLATE_PRICE);
             this.platePriceServiceMock.Setup(svc => svc.GetPlatePrice(soupPlate)).Returns(SOUP_PRICE);
             this.platePriceServiceMock.Setup(svc => svc.GetMenuPrice()).Returns(MENU_PRICE);
-            this.calculatorService = new MenuBillCalculatorService(this.platePriceServiceMock.Object);
+            this.calculatorService = new MenuBillCalculatorService(this.platePriceServiceMock.Object, new MenuSplitStrategyService());
         }
 
         /// <summary>

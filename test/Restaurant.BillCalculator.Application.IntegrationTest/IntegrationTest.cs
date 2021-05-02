@@ -29,7 +29,7 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
         {
             this.platePriceService = new PlatePriceService();
             this.regularBillCalculator = new RegularBillCalculatorService(platePriceService);
-            this.menuBillCalculator = new MenuBillCalculatorService(platePriceService);
+            this.menuBillCalculator = new MenuBillCalculatorService(platePriceService, new MenuSplitStrategyService());
             this.calculationStrategySelector = new CalculationStrategySelectorService(this.regularBillCalculator, this.menuBillCalculator);
             this.clockMock = new Mock<IClock>();
             this.billPaymentService = new BillPaymentService(this.calculationStrategySelector, clockMock.Object);

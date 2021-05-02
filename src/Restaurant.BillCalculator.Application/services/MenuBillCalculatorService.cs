@@ -1,5 +1,4 @@
-﻿using Restaurant.BillCalculator.Application.model;
-using Restaurant.BillCalculator.Domain.Model;
+﻿using Restaurant.BillCalculator.Domain.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +11,14 @@ namespace Restaurant.BillCalculator.Application.Services
     /// </summary>
     public class MenuBillCalculatorService : IMenuBillCalculatorService
     {
-        private IPlatePriceService platePriceService;
+        private readonly IPlatePriceService platePriceService;
+        private readonly IMenuSplitStrategyService splitStrategyService;
         private decimal menuPrice;
 
-        public MenuBillCalculatorService(IPlatePriceService platePriceService)
+        public MenuBillCalculatorService(IPlatePriceService platePriceService, IMenuSplitStrategyService splitStrategyService)
         {
             this.platePriceService = platePriceService;
+            this.splitStrategyService = splitStrategyService;
             if (platePriceService != null)
                 this.menuPrice = platePriceService.GetMenuPrice();
         }
@@ -32,7 +33,7 @@ namespace Restaurant.BillCalculator.Application.Services
             bool shouldCheckMenuPrices = this.AnalyzeWhetherShouldCheckMenu(soupPlate, plates);
             if(shouldCheckMenuPrices)
             {
-                MenuCalculationResult calculationResult = this.ExtractPartialMenu(soupPlate, plates);
+                MenuCalculationResult calculationResult = this.splitStrategyService.ExtractOptimalMenu(soupPlate, plates, this.SumPrice, this.menuPrice);
                 if (calculationResult.CalculateAsMenu)
                 {
                     return this.menuPrice + this.CalculateTotalPrice(calculationResult.RemainingPlates);
@@ -58,57 +59,6 @@ namespace Restaurant.BillCalculator.Application.Services
                 return false;
             }) != null;
             return ((containsSoup || fivePlates) && redOrBlue);
-        }
-
-        private MenuCalculationResult ExtractPartialMenu(BasePlate soup, BasePlate[] plates)
-        {
-            bool calculateAsMenu = false;
-            List<BasePlate> basePlatesList = new List<BasePlate>(plates);
-            List<BasePlate> menuPlatesList;
-            BasePlate[] menuPlates;
-            if (soup != null)
-            {
-                //Soup menu
-                basePlatesList.RemoveAll(plate => plate is SoupPlate);
-
-                // Optimize price plate ordering by most expensive
-                basePlatesList.Sort((x, y) => y.Price.CompareTo(x.Price));
-                int maxCount = basePlatesList.Count > 4 ? 4 : basePlatesList.Count;
-                menuPlatesList = basePlatesList.GetRange(0, maxCount);
-                menuPlatesList.Add(soup);
-                menuPlates = menuPlatesList.ToArray();
-                decimal originalPrice = this.SumPrice(menuPlates);
-                calculateAsMenu = originalPrice > this.menuPrice;
-            }
-            else
-            {
-                //Five plates menu
-                basePlatesList.Sort((x, y) => y.Price.CompareTo(x.Price));
-                menuPlatesList = basePlatesList.GetRange(0, 5);
-                menuPlates = menuPlatesList.ToArray();
-                decimal originalPrice = this.SumPrice(menuPlates);
-                calculateAsMenu = originalPrice > this.menuPrice;
-            }
-
-            BasePlate[] remainingItems = null;
-            if (calculateAsMenu)
-            {
-                List<BasePlate> fullListToRemoveMenu = new List<BasePlate>(plates);
-                menuPlatesList.ForEach(plate => fullListToRemoveMenu.Remove(plate));
-                remainingItems = fullListToRemoveMenu.ToArray();
-            }
-            else
-            {
-                menuPlates = new BasePlate[] { };
-                remainingItems = plates;
-            }
-
-            return new MenuCalculationResult()
-            {
-                CalculateAsMenu = calculateAsMenu,
-                MenuPlates = menuPlates,
-                RemainingPlates = remainingItems
-            };
         }
 
         private void PopulatePrices(BasePlate[] plates)
