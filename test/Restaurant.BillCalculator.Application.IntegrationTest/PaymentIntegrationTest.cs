@@ -169,6 +169,91 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
 
         }
 
+        [Fact]
+        public void UserStory4_Example1_PersonA_Test()
+        {
+            // Arrange
+            int greyPlateQuantity = 2;
+            IEnumerable<SushiPlate> greyPlates = Enumerable.Repeat(greyPlate, greyPlateQuantity);
+            int greenPlateQuantity = 2;
+            IEnumerable<SushiPlate> greenPlates = Enumerable.Repeat(greenPlate, greenPlateQuantity);
+            int redPlateQuantity = 2;
+            IEnumerable<SushiPlate> redPlates = Enumerable.Repeat(redPlate, redPlateQuantity);
+            int bluePlateQuantity = 1;
+            IEnumerable<SushiPlate> bluePlates = Enumerable.Repeat(bluePlate, bluePlateQuantity);
+            List<BasePlate> plates = new List<BasePlate> { soupPlate };
+            plates.AddRange(greyPlates);
+            plates.AddRange(greenPlates);
+            plates.AddRange(redPlates);
+            plates.AddRange(bluePlates);
+            this.clockMock.Setup(clk => clk.Now).Returns(new DateTime(2021, 5, 5, 13, 45, 0));
+            decimal expectedValue = 13.35m;
+
+            // Act
+            decimal paidValue = this.paymentService.PayBill(plates.ToArray());
+
+            // Assert
+            Assert.Equal(expectedValue, paidValue);
+
+        }
+
+        [Fact]
+        public void UserStory4_Example1_PersonB_Test()
+        {
+            // Arrange
+            int greyPlateQuantity = 2;
+            IEnumerable<SushiPlate> greyPlates = Enumerable.Repeat(greyPlate, greyPlateQuantity);
+            int greenPlateQuantity = 2;
+            IEnumerable<SushiPlate> greenPlates = Enumerable.Repeat(greenPlate, greenPlateQuantity);
+            int yellowPlateQuantity = 2;
+            IEnumerable<SushiPlate> yellowPlates = Enumerable.Repeat(yellowPlate, yellowPlateQuantity);
+            int redPlateQuantity = 2;
+            IEnumerable<SushiPlate> redPlates = Enumerable.Repeat(redPlate, redPlateQuantity);
+            List<BasePlate> plates = new List<BasePlate> { };
+            plates.AddRange(greyPlates);
+            plates.AddRange(greenPlates);
+            plates.AddRange(redPlates);
+            plates.AddRange(yellowPlates);
+            this.clockMock.Setup(clk => clk.Now).Returns(new DateTime(2021, 5, 5, 13, 45, 0));
+            decimal expectedValue = 15.35m;
+
+            // Act
+            decimal paidValue = this.paymentService.PayBill(plates.ToArray());
+
+            // Assert
+            Assert.Equal(expectedValue, paidValue);
+
+        }
+
+        [Fact]
+        public void UserStory4_Example1_PersonC_Test()
+        {
+            // Arrange
+            int greyPlateQuantity = 2;
+            IEnumerable<SushiPlate> greyPlates = Enumerable.Repeat(greyPlate, greyPlateQuantity);
+            int greenPlateQuantity = 2;
+            IEnumerable<SushiPlate> greenPlates = Enumerable.Repeat(greenPlate, greenPlateQuantity);
+            int yellowPlateQuantity = 3;
+            IEnumerable<SushiPlate> yellowPlates = Enumerable.Repeat(yellowPlate, yellowPlateQuantity);
+            int redPlateQuantity = 2;
+            IEnumerable<SushiPlate> redPlates = Enumerable.Repeat(redPlate, redPlateQuantity);
+            List<BasePlate> plates = new List<BasePlate> { soupPlate, soupPlate };
+            plates.AddRange(greyPlates);
+            plates.AddRange(greenPlates);
+            plates.AddRange(yellowPlates);
+            plates.AddRange(redPlates);
+            this.clockMock.Setup(clk => clk.Now).Returns(new DateTime(2021, 5, 5, 13, 45, 0));
+            decimal expectedValue = 18.95m;
+
+            // Act
+            decimal paidValue = this.paymentService.PayBill(plates.ToArray());
+
+            // Assert
+            Assert.Equal(expectedValue, paidValue);
+
+        }
+
+
     }
 
 }

@@ -62,15 +62,16 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
             };
             Order order4 = new Order()
             {
-                Person = "Person B",
+                Person = "Person C",
                 Plates = new BasePlate[] { soupPlate, soupPlate, greyPlate, greyPlate, greenPlate, greenPlate, yellowPlate, yellowPlate, yellowPlate, redPlate, redPlate }
             };
             List<Order> mockOrders = new List<Order> { order1, order2, order3, order4 };
             this.clockMock.Setup(clk => clk.Now).Returns(new DateTime(2021, 5, 5, 13, 45, 0));
-            int expectedPersonCount = 2;
+            int expectedPersonCount = 3;
             decimal personAExpectedValue = 13.35m;
             decimal personBExpectedValue = 15.35m;
             decimal personCExpectedValue = 18.95m;
+            decimal expectedOptimizedPrice = 36.85m;
 
             //Act
             mockOrders.ForEach(o => this.orderService.AddOrder(o));
@@ -78,12 +79,16 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
             int personCount = optimizedBill.PersonalPrice.Count;
             PersonalPrice personABill = optimizedBill.PersonalPrice["Person A"];
             PersonalPrice personBBill = optimizedBill.PersonalPrice["Person B"];
+            PersonalPrice personCBill = optimizedBill.PersonalPrice["Person C"];
+            decimal optimizedPrice = optimizedBill.OptimizedPrice;
 
             //Assert
             Assert.Equal(expectedPersonCount, personCount);
             Assert.Equal(8, personABill.Plates.ToList().Count);
             Assert.Equal(personAExpectedValue, personABill.Total);
             Assert.Equal(personBExpectedValue, personBBill.Total);
+            Assert.Equal(personCExpectedValue, personCBill.Total);
+            Assert.Equal(expectedOptimizedPrice, optimizedPrice);
         }
     }
 }
