@@ -1,11 +1,12 @@
 ﻿using Moq;
+using Restaurant.BillCalculator.Application.Data;
 using Restaurant.BillCalculator.Application.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
 
-namespace Restaurant.BillCalculator.Application.Test
+namespace Restaurant.BillCalculator.Application.Test.Services
 {
     public class BillPaymentServiceTests
     {
@@ -16,7 +17,7 @@ namespace Restaurant.BillCalculator.Application.Test
 
         public BillPaymentServiceTests()
         {
-            this.regularStrategy = new RegularBillCalculatorService(new PlatePriceService());
+            this.regularStrategy = new RegularBillCalculatorService(new InMemoryPriceRepository());
             this.strategySelectorMock = new Mock<ICalculationStrategySelectorService>();
             this.clockMock = new Mock<IClock>();
             this.billPaymentService = new BillPaymentService(strategySelectorMock.Object, this.clockMock.Object);

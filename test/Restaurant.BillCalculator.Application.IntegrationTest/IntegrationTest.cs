@@ -1,4 +1,5 @@
 using Moq;
+using Restaurant.BillCalculator.Application.Data;
 using Restaurant.BillCalculator.Application.Services;
 using Restaurant.BillCalculator.Domain.Model;
 using System;
@@ -19,7 +20,7 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
 
         private readonly CalculationStrategySelectorService calculationStrategySelector;
         private readonly BillPaymentService billPaymentService;
-        private readonly PlatePriceService platePriceService;
+        private readonly InMemoryPriceRepository platePriceService;
         private readonly RegularBillCalculatorService regularBillCalculator;
         private readonly MenuBillCalculatorService menuBillCalculator;
 
@@ -27,7 +28,7 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
 
         public IntegrationTest()
         {
-            this.platePriceService = new PlatePriceService();
+            this.platePriceService = new InMemoryPriceRepository();
             this.regularBillCalculator = new RegularBillCalculatorService(platePriceService);
             this.menuBillCalculator = new MenuBillCalculatorService(platePriceService, new MenuSplitStrategyService());
             this.calculationStrategySelector = new CalculationStrategySelectorService(this.regularBillCalculator, this.menuBillCalculator);

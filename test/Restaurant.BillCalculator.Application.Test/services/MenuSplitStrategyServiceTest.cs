@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using Xunit;
 
-namespace Restaurant.BillCalculator.Application.Test.services
+namespace Restaurant.BillCalculator.Application.Test.Services
 {
     public class MenuSplitStrategyServiceTest
     {

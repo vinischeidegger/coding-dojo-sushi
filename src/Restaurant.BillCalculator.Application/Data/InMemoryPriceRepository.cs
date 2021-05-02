@@ -1,14 +1,12 @@
 ﻿using Restaurant.BillCalculator.Domain.Model;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Restaurant.BillCalculator.Application.Services
+namespace Restaurant.BillCalculator.Application.Data
 {
     /// <summary>
     /// This class provides prices each of the Plates.
     /// </summary>
-    public class PlatePriceService : IPlatePriceService
+    public class InMemoryPriceRepository : IPriceRepository
     {
         private const string NULL_PLATE_EXCEPTION = "The plate cannot be null";
         private const string INVALID_ENUM_VALUE_EXCEPTION = "Plate Coler does not exist";

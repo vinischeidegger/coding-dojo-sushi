@@ -1,18 +1,19 @@
-﻿using Restaurant.BillCalculator.Application.Services;
+﻿using Restaurant.BillCalculator.Application.Data;
+using Restaurant.BillCalculator.Application.Services;
 using Restaurant.BillCalculator.Domain.Model;
 using System;
 using System.Reflection;
 using Xunit;
 
-namespace Restaurant.BillCalculator.Application.Test
+namespace Restaurant.BillCalculator.Application.Test.Services
 {
     public class PlatePriceServiceTests : PlateTestBase
     {
-        PlatePriceService calculatorService;
+        InMemoryPriceRepository calculatorService;
 
         public PlatePriceServiceTests()
         {
-            this.calculatorService = new PlatePriceService();
+            this.calculatorService = new InMemoryPriceRepository();
         }
 
         /// <summary>

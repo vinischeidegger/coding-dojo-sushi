@@ -1,4 +1,5 @@
-﻿using Restaurant.BillCalculator.Domain.Model;
+﻿using Restaurant.BillCalculator.Application.Data;
+using Restaurant.BillCalculator.Domain.Model;
 using System;
 using System.Linq;
 
@@ -9,11 +10,11 @@ namespace Restaurant.BillCalculator.Application.Services
     /// </summary>
     public class MenuBillCalculatorService : IMenuBillCalculatorService
     {
-        private readonly IPlatePriceService platePriceService;
+        private readonly IPriceRepository platePriceService;
         private readonly IMenuSplitStrategyService splitStrategyService;
         private decimal menuPrice;
 
-        public MenuBillCalculatorService(IPlatePriceService platePriceService, IMenuSplitStrategyService splitStrategyService)
+        public MenuBillCalculatorService(IPriceRepository platePriceService, IMenuSplitStrategyService splitStrategyService)
         {
             this.platePriceService = platePriceService;
             this.splitStrategyService = splitStrategyService;

@@ -1,4 +1,5 @@
 using Moq;
+using Restaurant.BillCalculator.Application.Data;
 using Restaurant.BillCalculator.Application.Services;
 using Restaurant.BillCalculator.Domain.Model;
 using System;
@@ -6,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace Restaurant.BillCalculator.Application.Test
+namespace Restaurant.BillCalculator.Application.Test.Services
 {
     public class MenuBillCalculatorServiceTests : PlateTestBase
     {
@@ -19,11 +20,11 @@ namespace Restaurant.BillCalculator.Application.Test
         private const decimal MENU_PRICE = 8.50m;
 
         private readonly MenuBillCalculatorService calculatorService;
-        private readonly Mock<IPlatePriceService> platePriceServiceMock;
+        private readonly Mock<IPriceRepository> platePriceServiceMock;
 
         public MenuBillCalculatorServiceTests()
         {
-            this.platePriceServiceMock = new Mock<IPlatePriceService>();
+            this.platePriceServiceMock = new Mock<IPriceRepository>();
             this.platePriceServiceMock.Setup(svc => svc.GetPlatePrice(greyPlate)).Returns(GREY_PLATE_PRICE);
             this.platePriceServiceMock.Setup(svc => svc.GetPlatePrice(greenPlate)).Returns(GREEN_PLATE_PRICE);
             this.platePriceServiceMock.Setup(svc => svc.GetPlatePrice(yellowPlate)).Returns(YELLOW_PLATE_PRICE);

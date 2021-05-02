@@ -1,8 +1,8 @@
 ﻿using Restaurant.BillCalculator.Domain.Model;
 
-namespace Restaurant.BillCalculator.Application.Services
+namespace Restaurant.BillCalculator.Application.Data
 {
-    public interface IPlatePriceService
+    public interface IPriceRepository
     {
         decimal GetPlatePrice(BasePlate plate);
 
