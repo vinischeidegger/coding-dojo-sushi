@@ -30,10 +30,10 @@ namespace Restaurant.BillCalculator.Application.Services
             this.PopulatePrices(plates);
 
             BasePlate soupPlate = plates.FirstOrDefault(plate => plate is SoupPlate);
-            bool shouldCheckMenuPrices = this.AnalyzeWhetherShouldCheckMenu(soupPlate, plates);
+            bool shouldCheckMenuPrices = this.AnalyzeWhetherShouldCheckMenu(plates);
             if(shouldCheckMenuPrices)
             {
-                MenuCalculationResult calculationResult = this.splitStrategyService.ExtractOptimalMenu(soupPlate, plates, this.SumPrice, this.menuPrice);
+                MenuCalculationResult calculationResult = this.splitStrategyService.ExtractOptimalMenu(plates, this.SumPrice, this.menuPrice);
                 if (calculationResult.CalculateAsMenu)
                 {
                     return this.menuPrice + this.CalculateTotalPrice(calculationResult.RemainingPlates);
@@ -46,9 +46,9 @@ namespace Restaurant.BillCalculator.Application.Services
             }
         }
 
-        private bool AnalyzeWhetherShouldCheckMenu(BasePlate soupPlate, BasePlate[] plates)
+        private bool AnalyzeWhetherShouldCheckMenu(BasePlate[] plates)
         {
-            bool containsSoup = soupPlate != null;
+            bool containsSoup = plates.FirstOrDefault(plate => plate is SoupPlate) != null;
             bool fivePlates = plates.Length >= 5;
             bool redOrBlue = plates.FirstOrDefault(plate => {
                 if (plate is SushiPlate)
@@ -58,7 +58,7 @@ namespace Restaurant.BillCalculator.Application.Services
                 }
                 return false;
             }) != null;
-            return ((containsSoup || fivePlates) && redOrBlue);
+            return (containsSoup || (fivePlates && redOrBlue));
         }
 
         private void PopulatePrices(BasePlate[] plates)

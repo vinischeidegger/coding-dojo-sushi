@@ -181,35 +181,14 @@ namespace Restaurant.BillCalculator.Application.Test
         /// Method to test bill calculation for Assumption 3
         /// </summary>
         [Fact]
-        public void PriceServiceShouldCalculateMenuPricesEvenIfClientOrderedLessThan4PlatesIfPricesMakesSense_WithBluePlate_Test ()
-        {
-            // Arrange
-            int greyPlateQuantity = 2;
-            IEnumerable<SushiPlate> greyPlates = Enumerable.Repeat(greyPlate, greyPlateQuantity);
-            List<BasePlate> plates = new List<BasePlate> { soupPlate, bluePlate };
-            plates.AddRange(greyPlates);
-            decimal expectedTotal = 8.5m;
-
-            // Act
-            decimal total = calculatorService.CalculateTotalPrice(plates.ToArray());
-
-            // Assert
-            Assert.Equal(expectedTotal, total);
-        }
-
-        /// <summary>
-        /// Method to test bill calculation for Assumption 3
-        /// </summary>
-        [Fact]
-        public void PriceServiceShouldCalculateMenuPricesEvenIfClientOrderedLessThan4PlatesIfPricesMakesSense_WithoutBluePlate_Test()
+        public void PriceServiceShouldCalculateMenuPricesEvenIfClientOrderedLessThan4PlatesIfPricesMakesSense_Test ()
         {
             // Arrange
             int greyPlateQuantity = 2;
             IEnumerable<SushiPlate> greyPlates = Enumerable.Repeat(greyPlate, greyPlateQuantity);
             List<BasePlate> plates = new List<BasePlate> { soupPlate };
             plates.AddRange(greyPlates);
-            // As there is no blue or red plate menu is not considered anymore
-            decimal expectedTotal = 2.5m + (4.95m * 2m);
+            decimal expectedTotal = 8.5m;
 
             // Act
             decimal total = calculatorService.CalculateTotalPrice(plates.ToArray());
@@ -262,7 +241,7 @@ namespace Restaurant.BillCalculator.Application.Test
         /// Method to test bill calculation for Assumption 3
         /// </summary>
         [Fact]
-        public void PriceServiceShouldCalculateOneMenuPlusPlates_OnlyGrey_Test()
+        public void PriceServiceShouldCalculateOneMenuPlusPlatesTest()
         {
             // Arrange
             int greyPlateQuantity = 5;
@@ -270,7 +249,7 @@ namespace Restaurant.BillCalculator.Application.Test
             List<BasePlate> plates = new List<BasePlate> { soupPlate, soupPlate };
             plates.AddRange(greyPlates);
             // No menus, because there are no red or blue
-            decimal expectedTotal = (2.5m * 2) + (4.95m * 5);
+            decimal expectedTotal = 8.5m  + 4.95m + 2.5m;
 
             // Act
             decimal total = calculatorService.CalculateTotalPrice(plates.ToArray());
@@ -290,7 +269,7 @@ namespace Restaurant.BillCalculator.Application.Test
             IEnumerable<SushiPlate> greyPlates = Enumerable.Repeat(greyPlate, greyPlateQuantity);
             List<BasePlate> plates = new List<BasePlate> { soupPlate, bluePlate };
             plates.AddRange(greyPlates);
-            decimal expectedTotal = 8.5m + 2.5m + 4.95m;
+            decimal expectedTotal = 8.5m + 4.95m + 0.95m;
 
             // Act
             decimal total = calculatorService.CalculateTotalPrice(plates.ToArray());

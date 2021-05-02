@@ -1,14 +1,26 @@
 ﻿using Restaurant.BillCalculator.Domain.Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Restaurant.BillCalculator.Application.Services
 {
     public class MenuSplitStrategyService : IMenuSplitStrategyService
     {
-        public MenuCalculationResult ExtractOptimalMenu(BasePlate soupPlate, BasePlate[] plates, Func<BasePlate[], decimal> regularPriceCalculation, decimal menuPrice)
+        public MenuCalculationResult ExtractOptimalMenu(BasePlate[] plates, Func<BasePlate[], decimal> regularPriceCalculation, decimal menuPrice)
         {
+            if (plates == null)
+            {
+                return new MenuCalculationResult()
+                {
+                    CalculateAsMenu = false,
+                    MenuPlates = new BasePlate[] { },
+                    RemainingPlates = new BasePlate[] { }
+                };
+            }
+
+            BasePlate soupPlate = plates.FirstOrDefault(plate => plate is SoupPlate);
             bool calculateAsMenu = false;
             List<BasePlate> basePlatesList = new List<BasePlate>(plates);
             List<BasePlate> menuPlatesList;
