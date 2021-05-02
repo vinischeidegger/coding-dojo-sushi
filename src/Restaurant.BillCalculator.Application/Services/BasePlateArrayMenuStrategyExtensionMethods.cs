@@ -3,8 +3,13 @@ using System.Linq;
 
 namespace Restaurant.BillCalculator.Application.Services
 {
-    public static class BasePlateArrayMenuExtensionMethods
+    public static class BasePlateArrayMenuStrategyExtensionMethods
     {
+        /// <summary>
+        /// Analyze whether the collection could be considered for Menu Pricing Strategy
+        /// </summary>
+        /// <param name="plates"></param>
+        /// <returns></returns>
         public static bool ShouldBeConsiderForMenu(this BasePlate[] plates)
         {
             bool containsSoup = plates.FirstOrDefault(plate => plate is SoupPlate) != null;
