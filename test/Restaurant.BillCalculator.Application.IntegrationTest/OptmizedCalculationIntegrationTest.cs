@@ -18,7 +18,7 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
         private protected readonly static SoupPlate soupPlate = new SoupPlate();
 
         private readonly CalculationStrategySelectorService calculationStrategySelector;
-        private readonly BillPaymentService billPaymentService;
+        private readonly PaymentService billPaymentService;
         private readonly InMemoryPriceRepository platePriceService;
         private readonly RegularBillCalculatorService regularBillCalculator;
         private readonly MenuBillCalculatorService menuBillCalculator;
@@ -32,7 +32,7 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
             this.menuBillCalculator = new MenuBillCalculatorService(platePriceService, new MenuSplitStrategyService());
             this.calculationStrategySelector = new CalculationStrategySelectorService(this.regularBillCalculator, this.menuBillCalculator);
             this.clockMock = new Mock<IClock>();
-            this.billPaymentService = new BillPaymentService(this.calculationStrategySelector, clockMock.Object);
+            this.billPaymentService = new PaymentService(this.calculationStrategySelector, clockMock.Object);
         }
 
 

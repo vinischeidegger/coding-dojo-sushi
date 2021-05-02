@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Restaurant.BillCalculator.Application.IntegrationTest
 {
-    public class BillPaymentIntegrationTest
+    public class PaymentIntegrationTest
     {
         private protected readonly static SushiPlate greyPlate = new SushiPlate(Color.Grey);
         private protected readonly static SushiPlate greenPlate = new SushiPlate(Color.Green);
@@ -19,21 +19,21 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
         private protected readonly static SoupPlate soupPlate = new SoupPlate();
 
         private readonly CalculationStrategySelectorService calculationStrategySelector;
-        private readonly BillPaymentService billPaymentService;
+        private readonly PaymentService paymentService;
         private readonly InMemoryPriceRepository platePriceService;
         private readonly RegularBillCalculatorService regularBillCalculator;
         private readonly MenuBillCalculatorService menuBillCalculator;
 
         private Mock<IClock> clockMock;
 
-        public BillPaymentIntegrationTest()
+        public PaymentIntegrationTest()
         {
             this.platePriceService = new InMemoryPriceRepository();
             this.regularBillCalculator = new RegularBillCalculatorService(platePriceService);
             this.menuBillCalculator = new MenuBillCalculatorService(platePriceService, new MenuSplitStrategyService());
             this.calculationStrategySelector = new CalculationStrategySelectorService(this.regularBillCalculator, this.menuBillCalculator);
             this.clockMock = new Mock<IClock>();
-            this.billPaymentService = new BillPaymentService(this.calculationStrategySelector, clockMock.Object);
+            this.paymentService = new PaymentService(this.calculationStrategySelector, clockMock.Object);
         }
 
         [Fact]
@@ -43,7 +43,7 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
             decimal expectedValue = 0m;
 
             //Act
-            decimal paidValue = this.billPaymentService.PayBill();
+            decimal paidValue = this.paymentService.PayBill();
 
             //Assert
             Assert.Equal(expectedValue, paidValue);
@@ -67,7 +67,7 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
             decimal expectedValue = 10.40m;
 
             // Act
-            decimal paidValue = this.billPaymentService.PayBill(plates.ToArray());
+            decimal paidValue = this.paymentService.PayBill(plates.ToArray());
 
             // Assert
             Assert.Equal(expectedValue, paidValue);
@@ -92,7 +92,7 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
             decimal expectedTotal = 16.35m;
 
             // Act
-            decimal total = this.billPaymentService.PayBill(plates.ToArray());
+            decimal total = this.paymentService.PayBill(plates.ToArray());
 
             // Assert
             Assert.Equal(expectedTotal, total);
@@ -116,7 +116,7 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
             decimal expectedTotal = 28.15m;
 
             // Act
-            decimal total = this.billPaymentService.PayBill(plates.ToArray());
+            decimal total = this.paymentService.PayBill(plates.ToArray());
 
             // Assert
             Assert.Equal(expectedTotal, total);
@@ -140,7 +140,7 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
             decimal expectedValue = 8.50m;
 
             // Act
-            decimal paidValue = this.billPaymentService.PayBill(plates.ToArray());
+            decimal paidValue = this.paymentService.PayBill(plates.ToArray());
 
             // Assert
             Assert.Equal(expectedValue, paidValue);
@@ -162,7 +162,7 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
             decimal expectedValue = (3 * 4.95m) + (2 * 3.95m);
 
             // Act
-            decimal paidValue = this.billPaymentService.PayBill(plates.ToArray());
+            decimal paidValue = this.paymentService.PayBill(plates.ToArray());
 
             // Assert
             Assert.Equal(expectedValue, paidValue);
