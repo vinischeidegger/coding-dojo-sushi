@@ -12,13 +12,13 @@ namespace Restaurant.BillCalculator.Application.Services
     {
         private readonly IOrderRepository orderRepository;
         private readonly IPriceRepository priceRepository;
-        private readonly RegularBillCalculatorService regularBill;
+        private readonly RegularCalculationService regularBill;
 
         public OrderService(IOrderRepository orderRepository, IPriceRepository priceRepository)
         {
             this.orderRepository = orderRepository;
             this.priceRepository = priceRepository;
-            this.regularBill = new RegularBillCalculatorService(this.priceRepository);
+            this.regularBill = new RegularCalculationService(this.priceRepository);
 
         }
 

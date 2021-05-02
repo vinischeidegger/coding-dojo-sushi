@@ -8,13 +8,13 @@ namespace Restaurant.BillCalculator.Application.Services
     /// <summary>
     /// This class represents the Menu Calculator Service Strategy. It should be used to calculate meal packages prices.
     /// </summary>
-    public class MenuBillCalculatorService : IMenuBillCalculatorService
+    public class MenuCalculationService : IMenuCalculationService
     {
         private readonly IPriceRepository platePriceService;
         private readonly IMenuSplitStrategyService splitStrategyService;
         private decimal menuPrice;
 
-        public MenuBillCalculatorService(IPriceRepository platePriceService, IMenuSplitStrategyService splitStrategyService)
+        public MenuCalculationService(IPriceRepository platePriceService, IMenuSplitStrategyService splitStrategyService)
         {
             this.platePriceService = platePriceService;
             this.splitStrategyService = splitStrategyService;

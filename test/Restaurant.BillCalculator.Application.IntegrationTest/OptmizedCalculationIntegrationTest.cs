@@ -20,16 +20,16 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
         private readonly CalculationStrategySelectorService calculationStrategySelector;
         private readonly PaymentService billPaymentService;
         private readonly InMemoryPriceRepository platePriceService;
-        private readonly RegularBillCalculatorService regularBillCalculator;
-        private readonly MenuBillCalculatorService menuBillCalculator;
+        private readonly RegularCalculationService regularBillCalculator;
+        private readonly MenuCalculationService menuBillCalculator;
 
         private Mock<IClock> clockMock;
 
         public OptmizedCalculationIntegrationTest()
         {
             this.platePriceService = new InMemoryPriceRepository();
-            this.regularBillCalculator = new RegularBillCalculatorService(platePriceService);
-            this.menuBillCalculator = new MenuBillCalculatorService(platePriceService, new MenuSplitStrategyService());
+            this.regularBillCalculator = new RegularCalculationService(platePriceService);
+            this.menuBillCalculator = new MenuCalculationService(platePriceService, new MenuSplitStrategyService());
             this.calculationStrategySelector = new CalculationStrategySelectorService(this.regularBillCalculator, this.menuBillCalculator);
             this.clockMock = new Mock<IClock>();
             this.billPaymentService = new PaymentService(this.calculationStrategySelector, clockMock.Object);

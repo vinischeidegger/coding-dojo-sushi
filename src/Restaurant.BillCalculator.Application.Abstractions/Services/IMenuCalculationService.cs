@@ -1,6 +1,6 @@
 ﻿namespace Restaurant.BillCalculator.Application.Services
 {
-    public interface IMenuBillCalculatorService : IBillCalculatorService
+    public interface IMenuCalculationService : IBillCalculatorService
     {
     }
 }
