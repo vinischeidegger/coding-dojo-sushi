@@ -17,13 +17,15 @@ namespace Restaurant.BillCalculator.Application.Test.Services
         private Mock<IOrderRepository> orderRepositoryMock;
         private Mock<IPriceRepository> priceRepositoryMock;
         private readonly Mock<IPaymentService> paymentService;
+        private readonly Mock<IClock> clockMock;
 
         public OrderServiceTest()
         {
             this.orderRepositoryMock = new Mock<IOrderRepository>();
             this.priceRepositoryMock = new Mock<IPriceRepository>();
             this.paymentService = new Mock<IPaymentService>();
-            this.orderService = new OrderService(paymentService.Object, orderRepositoryMock.Object, priceRepositoryMock.Object);
+            this.clockMock = new Mock<IClock>();
+            this.orderService = new OrderService(paymentService.Object, orderRepositoryMock.Object, priceRepositoryMock.Object, this.clockMock.Object);
         }
 
         [Fact]

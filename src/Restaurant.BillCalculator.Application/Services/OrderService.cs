@@ -13,13 +13,15 @@ namespace Restaurant.BillCalculator.Application.Services
         private readonly IPaymentService paymentService;
         private readonly IOrderRepository orderRepository;
         private readonly IPriceRepository priceRepository;
+        private readonly IClock clock;
         private readonly RegularCalculationService regularBill;
 
-        public OrderService(IPaymentService paymentService, IOrderRepository orderRepository, IPriceRepository priceRepository)
+        public OrderService(IPaymentService paymentService, IOrderRepository orderRepository, IPriceRepository priceRepository, IClock clock)
         {
             this.paymentService = paymentService;
             this.orderRepository = orderRepository;
             this.priceRepository = priceRepository;
+            this.clock = clock;
             this.regularBill = new RegularCalculationService(this.priceRepository);
 
         }
@@ -48,7 +50,7 @@ namespace Restaurant.BillCalculator.Application.Services
                 Plates = g.ToList().SelectMany(order => order.Plates)
             });
 
-            DateTime paymentTime = DateTime.Now;
+            DateTime paymentTime = this.clock.Now;
             foreach(var personPrice in result.Values)
             {
                 personPrice.Total = this.paymentService.PayBill(paymentTime, personPrice.Plates.ToArray());

@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Restaurant.BillCalculator.Application.Test.Services
 {
-    public class MenuBillCalculatorServiceTests : PlateTestBase
+    public class MenuCalculationServiceTests : PlateTestBase
     {
         private const decimal GREY_PLATE_PRICE = 4.95m;
         private const decimal GREEN_PLATE_PRICE = 3.95m;
@@ -22,7 +22,7 @@ namespace Restaurant.BillCalculator.Application.Test.Services
         private readonly MenuCalculationService calculatorService;
         private readonly Mock<IPriceRepository> platePriceServiceMock;
 
-        public MenuBillCalculatorServiceTests()
+        public MenuCalculationServiceTests()
         {
             this.platePriceServiceMock = new Mock<IPriceRepository>();
             this.platePriceServiceMock.Setup(svc => svc.GetPlatePrice(greyPlate)).Returns(GREY_PLATE_PRICE);
