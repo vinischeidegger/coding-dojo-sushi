@@ -42,7 +42,7 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
         [Fact]
         public void Test()
         {
-
+            this.orderService
         }
     }
 }
