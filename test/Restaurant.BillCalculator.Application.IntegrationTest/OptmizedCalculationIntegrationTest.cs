@@ -74,6 +74,8 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
             decimal personCExpectedValue = 18.95m;
             //decimal expectedOptimizedPrice = 36.85m;
             decimal expectedOptimizedPrice = 45.4m;
+            //decimal expectedSavings = 10.8m;
+            decimal expectedSavings = 3.25m;
 
             //Act
             mockOrders.ForEach(o => this.orderService.AddOrder(o));
@@ -83,6 +85,7 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
             PersonalPrice personBBill = optimizedBill.PersonalPrice["Person B"];
             PersonalPrice personCBill = optimizedBill.PersonalPrice["Person C"];
             decimal optimizedPrice = optimizedBill.OptimizedPrice;
+            decimal actualSavings = optimizedBill.Saved;
 
             //Assert
             Assert.Equal(expectedPersonCount, personCount);
@@ -91,6 +94,7 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
             Assert.Equal(personBExpectedValue, personBBill.Total);
             Assert.Equal(personCExpectedValue, personCBill.Total);
             Assert.Equal(expectedOptimizedPrice, optimizedPrice);
+            Assert.Equal(expectedSavings, actualSavings);
         }
 
         [Fact]
@@ -120,6 +124,8 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
             decimal personCExpectedValue = 17.95m;
             //decimal expectedOptimizedPrice = 42.65m;
             decimal expectedOptimizedPrice = 41.65m;
+            //decimal expectedSavings = 0m;
+            decimal expectedSavings = 1m;
 
             //Act
             mockOrders.ForEach(o => this.orderService.AddOrder(o));
@@ -129,6 +135,7 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
             PersonalPrice personBBill = optimizedBill.PersonalPrice["Person B"];
             PersonalPrice personCBill = optimizedBill.PersonalPrice["Person C"];
             decimal optimizedPrice = optimizedBill.OptimizedPrice;
+            decimal actualSavings = optimizedBill.Saved;
 
             //Assert
             Assert.Equal(expectedPersonCount, personCount);
@@ -137,6 +144,7 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
             Assert.Equal(personBExpectedValue, personBBill.Total);
             Assert.Equal(personCExpectedValue, personCBill.Total);
             Assert.Equal(expectedOptimizedPrice, optimizedPrice);
+            Assert.Equal(expectedSavings, actualSavings);
         }
     }
 }

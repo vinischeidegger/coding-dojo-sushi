@@ -59,7 +59,7 @@ namespace Restaurant.BillCalculator.Application.Services
             return new OptimizedBill()
             {
                 PersonalPrice = result,
-                OptimizedPrice = this.paymentService.PayBill(paymentTime, pricedOrders.SelectMany(order => order.Plates).ToArray())
+                OptimizedPrice = this.paymentService.PayBill(paymentTime, pricedOrders.SelectMany(order => order.Plates).ToArray())                
             };
         }
     }
