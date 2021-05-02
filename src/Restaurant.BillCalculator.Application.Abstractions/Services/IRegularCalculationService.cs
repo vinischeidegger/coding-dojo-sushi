@@ -1,7 +1,7 @@
 ﻿
 namespace Restaurant.BillCalculator.Application.Services
 {
-    public interface IRegularCalculationService : IBillCalculatorService
+    public interface IRegularCalculationService : ICalculationService
     {
     }
 }

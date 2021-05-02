@@ -17,7 +17,7 @@ namespace Restaurant.BillCalculator.Application.Services
         private readonly DayOfWeek menuStartDay;
         private readonly DayOfWeek menuEndDay;
 
-        private readonly Dictionary<CalculationStrategy, IBillCalculatorService> strategySelector;
+        private readonly Dictionary<CalculationStrategy, ICalculationService> strategySelector;
 
         public CalculationStrategySelectorService(IRegularCalculationService regularBillCalculator, IMenuCalculationService menuBillCalculator)
         {
@@ -25,7 +25,7 @@ namespace Restaurant.BillCalculator.Application.Services
             this.menuEndTime = new TimeSpan(17, 0, 0); //12 o'clock
             this.menuStartDay = DayOfWeek.Monday;
             this.menuEndDay = DayOfWeek.Friday;
-            this.strategySelector = new Dictionary<CalculationStrategy, IBillCalculatorService> 
+            this.strategySelector = new Dictionary<CalculationStrategy, ICalculationService> 
             {
                 { CalculationStrategy.RegularStrategy, regularBillCalculator },
                 { CalculationStrategy.MenuStrategy, menuBillCalculator}
@@ -49,7 +49,7 @@ namespace Restaurant.BillCalculator.Application.Services
         /// <param name="paymentDateTime"></param>
         /// <param name="plates"></param>
         /// <returns></returns>
-        public IBillCalculatorService GetBillCalculatorStrategy(CalculationStrategy calculationStrategy)
+        public ICalculationService GetBillCalculatorStrategy(CalculationStrategy calculationStrategy)
         {
             return this.strategySelector[calculationStrategy];
         }

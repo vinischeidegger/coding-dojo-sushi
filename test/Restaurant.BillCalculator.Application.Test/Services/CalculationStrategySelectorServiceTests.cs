@@ -150,8 +150,8 @@ namespace Restaurant.BillCalculator.Application.Test.Services
             CalculationStrategy regularStrategy = CalculationStrategy.RegularStrategy;
 
             //Act
-            IBillCalculatorService menuBillCalculatorService = this.strategySelector.GetBillCalculatorStrategy(menuStrategy);
-            IBillCalculatorService regularBillCalculatorService = this.strategySelector.GetBillCalculatorStrategy(regularStrategy);
+            ICalculationService menuBillCalculatorService = this.strategySelector.GetBillCalculatorStrategy(menuStrategy);
+            ICalculationService regularBillCalculatorService = this.strategySelector.GetBillCalculatorStrategy(regularStrategy);
             bool isMenuType = menuBillCalculatorService is IMenuCalculationService;
             bool isRegularType = regularBillCalculatorService is IRegularCalculationService;
 

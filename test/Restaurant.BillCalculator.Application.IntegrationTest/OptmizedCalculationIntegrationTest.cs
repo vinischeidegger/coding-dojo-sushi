@@ -5,6 +5,7 @@ using Restaurant.BillCalculator.Domain.Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Xunit;
 
 namespace Restaurant.BillCalculator.Application.IntegrationTest
 {
@@ -18,23 +19,30 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
         private protected readonly static SoupPlate soupPlate = new SoupPlate();
 
         private readonly CalculationStrategySelectorService calculationStrategySelector;
-        private readonly PaymentService billPaymentService;
-        private readonly InMemoryPriceRepository platePriceService;
+        private readonly PaymentService paymentService;
+        private readonly OrderService orderService;
+        private readonly InMemoryPriceRepository priceRepository;
         private readonly RegularCalculationService regularBillCalculator;
         private readonly MenuCalculationService menuBillCalculator;
-
+        private readonly InMemoryOrderRepository orderRepository;
         private Mock<IClock> clockMock;
 
         public OptmizedCalculationIntegrationTest()
         {
-            this.platePriceService = new InMemoryPriceRepository();
-            this.regularBillCalculator = new RegularCalculationService(platePriceService);
-            this.menuBillCalculator = new MenuCalculationService(platePriceService, new MenuSplitStrategyService());
+            this.priceRepository = new InMemoryPriceRepository();
+            this.regularBillCalculator = new RegularCalculationService(priceRepository);
+            this.menuBillCalculator = new MenuCalculationService(priceRepository, new MenuSplitStrategyService());
             this.calculationStrategySelector = new CalculationStrategySelectorService(this.regularBillCalculator, this.menuBillCalculator);
             this.clockMock = new Mock<IClock>();
-            this.billPaymentService = new PaymentService(this.calculationStrategySelector, clockMock.Object);
+            this.paymentService = new PaymentService(this.calculationStrategySelector, clockMock.Object);
+            this.orderRepository = new InMemoryOrderRepository();
+            this.orderService = new OrderService(this.paymentService, this.orderRepository, this.priceRepository);
         }
 
+        [Fact]
+        public void Test()
+        {
 
+        }
     }
 }

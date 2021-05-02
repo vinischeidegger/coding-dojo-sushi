@@ -28,7 +28,7 @@ namespace Restaurant.BillCalculator.Application.Services
         public decimal PayBill(DateTime paymentTime, BasePlate[] plates = null)
         {
             CalculationStrategy calculationStrategy = this.calculationStrategySelector.GetCalculationStrategy(this.clock.Now, plates);
-            IBillCalculatorService billCalculatorService = this.calculationStrategySelector.GetBillCalculatorStrategy(calculationStrategy);
+            ICalculationService billCalculatorService = this.calculationStrategySelector.GetBillCalculatorStrategy(calculationStrategy);
             return billCalculatorService.CalculateTotalPrice(plates);
         }
     }
