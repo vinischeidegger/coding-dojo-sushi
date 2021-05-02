@@ -215,7 +215,8 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
             plates.AddRange(redPlates);
             plates.AddRange(yellowPlates);
             this.clockMock.Setup(clk => clk.Now).Returns(new DateTime(2021, 5, 5, 13, 45, 0));
-            decimal expectedValue = 15.35m;
+            //decimal expectedValue = 15.35m;
+            decimal expectedValue = 16.35m;
 
             // Act
             decimal paidValue = this.paymentService.PayBill(plates.ToArray());

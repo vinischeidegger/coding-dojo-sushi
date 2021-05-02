@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Restaurant.BillCalculator.Application.Services
 {
-    public static class BasePlateArrayMenuStrategyExtensionMethods
+    public static class PlateExtensionMethods
     {
         /// <summary>
         /// Analyze whether the collection could be considered for Menu Pricing Strategy
@@ -14,16 +14,19 @@ namespace Restaurant.BillCalculator.Application.Services
         {
             bool containsSoup = plates.FirstOrDefault(plate => plate is SoupPlate) != null;
             bool fivePlates = plates.Length >= 5;
-            bool redOrBlue = plates.FirstOrDefault(plate => {
-                if (plate is SushiPlate)
-                {
-                    SushiPlate sushiPlate = (SushiPlate)plate;
-                    return sushiPlate.Color.Equals(Color.Red) || sushiPlate.Color.Equals(Color.Blue);
-                }
-                return false;
-            }) != null;
+            bool redOrBlue = plates.FirstOrDefault(plate => plate.IsOfColor(Color.Red) || plate.IsOfColor(Color.Blue)) != null;
 
             return (containsSoup || (fivePlates && redOrBlue));
+        }
+
+        public static bool IsOfColor(this BasePlate plate, Color color)
+        {
+            if (plate is SushiPlate)
+            {
+                SushiPlate sushiPlate = (SushiPlate)plate;
+                return sushiPlate.Color.Equals(color);
+            }
+            return false;
         }
     }
 }

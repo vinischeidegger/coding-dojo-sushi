@@ -42,8 +42,22 @@ namespace Restaurant.BillCalculator.Application.Services
             else
             {
                 //Five plates menu
+                BasePlate redPlate = plates.FirstOrDefault(plate => plate.IsOfColor(Color.Red));
+                BasePlate bluePlate = plates.FirstOrDefault(plate => plate.IsOfColor(Color.Blue));
+
+                BasePlate plateToRemove;
+                if (redPlate != null)
+                {
+                    plateToRemove = redPlate;
+                }
+                else
+                {
+                    plateToRemove = bluePlate;
+                }
+                basePlatesList.Remove(plateToRemove);
                 basePlatesList.Sort((x, y) => y.Price.CompareTo(x.Price));
-                menuPlatesList = basePlatesList.GetRange(0, 5);
+                menuPlatesList = basePlatesList.GetRange(0, 4);
+                menuPlatesList.Add(plateToRemove);
                 menuPlates = menuPlatesList.ToArray();
                 decimal originalPrice = regularPriceCalculation(menuPlates);
                 calculateAsMenu = originalPrice > menuPrice;

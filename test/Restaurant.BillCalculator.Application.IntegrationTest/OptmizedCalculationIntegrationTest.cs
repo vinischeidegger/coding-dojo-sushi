@@ -42,7 +42,7 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
         }
 
         [Fact]
-        public void optmizedBillIntegrationTest()
+        public void optmizedBillIntegration_Example1_Test()
         {
             //Arrange
             Order order1 = new Order()
@@ -69,9 +69,57 @@ namespace Restaurant.BillCalculator.Application.IntegrationTest
             this.clockMock.Setup(clk => clk.Now).Returns(new DateTime(2021, 5, 5, 13, 45, 0));
             int expectedPersonCount = 3;
             decimal personAExpectedValue = 13.35m;
-            decimal personBExpectedValue = 15.35m;
+            //decimal personBExpectedValue = 15.35m;
+            decimal personBExpectedValue = 16.35m;
             decimal personCExpectedValue = 18.95m;
-            decimal expectedOptimizedPrice = 36.85m;
+            //decimal expectedOptimizedPrice = 36.85m;
+            decimal expectedOptimizedPrice = 45.4m;
+
+            //Act
+            mockOrders.ForEach(o => this.orderService.AddOrder(o));
+            OptimizedBill optimizedBill = this.orderService.PayAllOrders();
+            int personCount = optimizedBill.PersonalPrice.Count;
+            PersonalPrice personABill = optimizedBill.PersonalPrice["Person A"];
+            PersonalPrice personBBill = optimizedBill.PersonalPrice["Person B"];
+            PersonalPrice personCBill = optimizedBill.PersonalPrice["Person C"];
+            decimal optimizedPrice = optimizedBill.OptimizedPrice;
+
+            //Assert
+            Assert.Equal(expectedPersonCount, personCount);
+            Assert.Equal(8, personABill.Plates.ToList().Count);
+            Assert.Equal(personAExpectedValue, personABill.Total);
+            Assert.Equal(personBExpectedValue, personBBill.Total);
+            Assert.Equal(personCExpectedValue, personCBill.Total);
+            Assert.Equal(expectedOptimizedPrice, optimizedPrice);
+        }
+
+        [Fact]
+        public void optmizedBillIntegration_Example2_Test()
+        {
+            //Arrange
+            Order order1 = new Order()
+            {
+                Person = "Person A",
+                Plates = new BasePlate[] { soupPlate, greyPlate, greyPlate, greenPlate, greenPlate, redPlate, bluePlate, bluePlate }
+            };
+            Order order2 = new Order()
+            {
+                Person = "Person B",
+                Plates = new BasePlate[] { greyPlate, greyPlate, greenPlate, greenPlate, redPlate, redPlate, bluePlate, bluePlate }
+            };
+            Order order3 = new Order()
+            {
+                Person = "Person C",
+                Plates = new BasePlate[] { soupPlate, soupPlate, greenPlate, greenPlate, yellowPlate, yellowPlate, yellowPlate, redPlate, redPlate, bluePlate, bluePlate }
+            };
+            List<Order> mockOrders = new List<Order> { order1, order2, order3};
+            this.clockMock.Setup(clk => clk.Now).Returns(new DateTime(2021, 5, 5, 13, 45, 0));
+            int expectedPersonCount = 3;
+            decimal personAExpectedValue = 12.35m;
+            decimal personBExpectedValue = 12.35m;
+            decimal personCExpectedValue = 17.95m;
+            //decimal expectedOptimizedPrice = 42.65m;
+            decimal expectedOptimizedPrice = 41.65m;
 
             //Act
             mockOrders.ForEach(o => this.orderService.AddOrder(o));
