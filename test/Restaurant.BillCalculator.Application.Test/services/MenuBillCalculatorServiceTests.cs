@@ -19,7 +19,7 @@ namespace Restaurant.BillCalculator.Application.Test.Services
         private const decimal SOUP_PRICE = 2.50m;
         private const decimal MENU_PRICE = 8.50m;
 
-        private readonly MenuBillCalculatorService calculatorService;
+        private readonly MenuCalculationService calculatorService;
         private readonly Mock<IPriceRepository> platePriceServiceMock;
 
         public MenuBillCalculatorServiceTests()
@@ -32,7 +32,7 @@ namespace Restaurant.BillCalculator.Application.Test.Services
             this.platePriceServiceMock.Setup(svc => svc.GetPlatePrice(bluePlate)).Returns(BLUE_PLATE_PRICE);
             this.platePriceServiceMock.Setup(svc => svc.GetPlatePrice(soupPlate)).Returns(SOUP_PRICE);
             this.platePriceServiceMock.Setup(svc => svc.GetMenuPrice()).Returns(MENU_PRICE);
-            this.calculatorService = new MenuBillCalculatorService(this.platePriceServiceMock.Object, new MenuSplitStrategyService());
+            this.calculatorService = new MenuCalculationService(this.platePriceServiceMock.Object, new MenuSplitStrategyService());
         }
 
         /// <summary>

@@ -19,7 +19,7 @@ namespace Restaurant.BillCalculator.Application.Services
 
         private readonly Dictionary<CalculationStrategy, IBillCalculatorService> strategySelector;
 
-        public CalculationStrategySelectorService(IRegularBillCalculatorService regularBillCalculator, IMenuBillCalculatorService menuBillCalculator)
+        public CalculationStrategySelectorService(IRegularCalculationService regularBillCalculator, IMenuCalculationService menuBillCalculator)
         {
             this.menuStartTime = new TimeSpan(11, 0, 0); //10 o'clock
             this.menuEndTime = new TimeSpan(17, 0, 0); //12 o'clock

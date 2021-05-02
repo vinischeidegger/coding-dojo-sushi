@@ -12,13 +12,13 @@ namespace Restaurant.BillCalculator.Application.Test.Services
     public class CalculationStrategySelectorServiceTests : PlateTestBase
     {
         private readonly CalculationStrategySelectorService strategySelector;
-        private readonly Mock<IRegularBillCalculatorService> regularCalculatorMock;
-        private readonly Mock<IMenuBillCalculatorService> menuCalculatorMock;
+        private readonly Mock<IRegularCalculationService> regularCalculatorMock;
+        private readonly Mock<IMenuCalculationService> menuCalculatorMock;
 
         public CalculationStrategySelectorServiceTests()
         {
-            this.regularCalculatorMock = new Mock<IRegularBillCalculatorService>();
-            this.menuCalculatorMock = new Mock<IMenuBillCalculatorService>();
+            this.regularCalculatorMock = new Mock<IRegularCalculationService>();
+            this.menuCalculatorMock = new Mock<IMenuCalculationService>();
             this.strategySelector = new CalculationStrategySelectorService(this.regularCalculatorMock.Object, this.menuCalculatorMock.Object);
         }
 
@@ -152,8 +152,8 @@ namespace Restaurant.BillCalculator.Application.Test.Services
             //Act
             IBillCalculatorService menuBillCalculatorService = this.strategySelector.GetBillCalculatorStrategy(menuStrategy);
             IBillCalculatorService regularBillCalculatorService = this.strategySelector.GetBillCalculatorStrategy(regularStrategy);
-            bool isMenuType = menuBillCalculatorService is IMenuBillCalculatorService;
-            bool isRegularType = regularBillCalculatorService is IRegularBillCalculatorService;
+            bool isMenuType = menuBillCalculatorService is IMenuCalculationService;
+            bool isRegularType = regularBillCalculatorService is IRegularCalculationService;
 
             //Assert
             Assert.True(isMenuType);
